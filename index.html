@@ -1,0 +1,1296 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Luxia – Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./runtime.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f3f2f8}
+a{color:#3b2a78}a:hover{color:#1f1838}
+button{font-family:inherit;cursor:pointer}
+summary{cursor:pointer}
+html{scroll-behavior:smooth}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes scanx{0%,100%{transform:translateX(-14px)}50%{transform:translateX(14px)}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes stepon{0%,4%{opacity:.18;transform:scale(.7)}9%,92%{opacity:1;transform:scale(1)}100%{opacity:.18;transform:scale(.7)}}
+@keyframes reveal{0%,55%{opacity:.15}62%,92%{opacity:1}100%{opacity:.15}}
+@keyframes vidprog{from{width:0%}to{width:100%}}
+@keyframes vidbar{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
+@keyframes vidscan{from{transform:translateX(-100%)}to{transform:translateX(320%)}}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(400%)}}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+</style>
+</helmet>
+<div style="font-family: 'Nunito Sans', 'Avenir Next', Avenir, 'Segoe UI', system-ui, sans-serif; color: #1f1838; background: #f3f2f8; display: flex; flex-wrap: wrap; min-height: 100vh; position: relative">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside style="flex: 1 1 250px; max-width: 290px; min-width: 230px; background: #120d2a; color: #e9e6f5; padding: 28px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 4px">
+    <button type="button" onClick="{{ goHome }}" aria-label="Luxia, vai alla home" style="display: flex; align-items: center; gap: 6px; padding: 0 12px 24px; background: transparent; border: none; color: #ffffff">
+      <span style="font-size: 30px; font-weight: 800; letter-spacing: 3px">LUXIA</span>
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a48cf0" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20"></path></svg>
+    </button>
+    <nav aria-label="Principale" style="display: flex; flex-direction: column; gap: 4px">
+      <button type="button" onClick="{{ goHome }}" aria-current="{{ curHome }}" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; border: none; text-align: left; font-weight: 700; font-size: 16px; {{ navHome }}">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home</button>
+      <button type="button" onClick="{{ goLia }}" aria-current="{{ curLia }}" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; border: none; text-align: left; font-weight: 700; font-size: 16px; {{ navLia }}">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16"></path></svg>
+        <span style="flex: 1">LIA</span>
+        <span style="font-size: 11px; font-weight: 800; letter-spacing: 0.5px; color: #120d2a; background: #a48cf0; padding: 2px 8px; border-radius: 99px">NUOVO</span></button>
+      <button type="button" onClick="{{ goCons }}" aria-current="{{ curCons }}" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; border: none; text-align: left; font-weight: 700; font-size: 16px; {{ navCons }}">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20h4v-2a3 3 0 0 0-5.4-1.8M7 20H3v-2a3 3 0 0 1 5.4-1.8M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM12 13c-2.8 0-5 2-5 4.5V20h10v-2.5c0-2.5-2.2-4.5-5-4.5z"></path></svg>Progetti su misura</button>
+      <button type="button" onClick="{{ goPlans }}" aria-current="{{ curPlans }}" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; border: none; text-align: left; font-weight: 700; font-size: 16px; {{ navPlans }}">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 10h18M7 15h4"></path></svg>
+        <span style="flex: 1">Piano e consumi</span>
+        <span style="font-size: 12px; font-weight: 700; color: #a8a2c4">62%</span></button>
+      <button type="button" onClick="{{ goCredit }}" aria-current="{{ curCredit }}" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; border: none; text-align: left; font-weight: 700; font-size: 16px; {{ navCredit }}">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M15 8.5a4 4 0 1 0 0 7M7.5 11h6M7.5 13.5h6"></path></svg>
+        <span style="flex: 1">Credit Agent</span>
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #f2c14e"></span></button>
+    </nav>
+    <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 16px 0 10px"></div>
+    <div style="padding: 0 14px 6px; font-size: 12px; letter-spacing: 2px; color: #a8a2c4; font-weight: 700">AMMINISTRAZIONE</div>
+    <a href="#" style="padding: 10px 14px; border-radius: 10px; color: #e9e6f5; text-decoration: none; font-size: 15px; font-weight: 600">Users</a>
+    <a href="#" style="padding: 10px 14px; border-radius: 10px; color: #e9e6f5; text-decoration: none; font-size: 15px; font-weight: 600">Access Levels</a>
+    <a href="#" style="padding: 10px 14px; border-radius: 10px; color: #e9e6f5; text-decoration: none; font-size: 15px; font-weight: 600">Data Sources</a>
+    <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 12px 0 10px"></div>
+    <div style="padding: 0 14px; font-size: 12px; letter-spacing: 2px; color: #a8a2c4; font-weight: 700">PROJECT</div>
+    <div style="padding: 4px 14px 6px; font-size: 16px; font-weight: 700; color: #ffffff">Demo</div>
+    <a href="#" style="display: flex; justify-content: space-between; padding: 10px 14px; color: #e9e6f5; text-decoration: none; font-size: 15px; font-weight: 600"><span>Galaxy</span></a>
+    <a href="#" style="display: flex; justify-content: space-between; padding: 10px 14px; color: #e9e6f5; text-decoration: none; font-size: 15px; font-weight: 600"><span>Constellations</span><span style="color: #a8a2c4">20</span></a>
+    <a href="#" style="display: flex; justify-content: space-between; padding: 10px 14px; color: #e9e6f5; text-decoration: none; font-size: 15px; font-weight: 600"><span>Chats</span><span style="color: #a8a2c4">1</span></a>
+    <a href="#" style="display: flex; justify-content: space-between; padding: 10px 14px; color: #e9e6f5; text-decoration: none; font-size: 15px; font-weight: 600"><span>Dashboard</span><span style="color: #a8a2c4">0</span></a>
+    <div style="flex-grow: 1"></div>
+    <div style="display: flex; align-items: center; gap: 12px; padding: 18px 12px 0; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 24px">
+      <span style="width: 40px; height: 40px; border-radius: 10px; background: #4fa3d1; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 700">MG</span>
+      <div style="display: flex; flex-direction: column"><span style="font-weight: 700; font-size: 15px">Margherita Giannotti</span><span style="color: #a8a2c4; font-size: 14px">Org Admin</span></div>
+    </div>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 36px clamp(20px, 4vw, 56px) 72px; box-sizing: border-box">
+    <div style="max-width: 1180px; margin: 0 auto">
+
+    <!-- ============ HOME ============ -->
+    <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+    <div style="display: flex; flex-direction: column; gap: 36px">
+      <header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 16px">
+        <div>
+          <h1 style="margin: 0; font-size: 40px; font-weight: 800; letter-spacing: -0.5px">Welcome back</h1>
+          <p style="margin: 6px 0 0; color: #5d5873; font-size: 17px">I tuoi agenti, progetti e chat, pronti per ripartire.</p>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap">
+          <button type="button" style="height: 46px; padding: 0 20px; border-radius: 10px; border: none; background: #3b2a78; color: #ffffff; font-size: 16px; font-weight: 700">New Chat</button>
+          <button type="button" style="height: 46px; padding: 0 20px; border-radius: 10px; border: 1px solid #dcd9e8; background: #ffffff; color: #1f1838; font-size: 16px; font-weight: 700">New Project</button>
+        </div>
+      </header>
+
+      <label style="display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 20px; background: #ffffff; border: 1px solid #e4e2ee; border-radius: 14px">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5d5873" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+        <span style="position: absolute; left: -9999px">Cerca</span>
+        <input type="search" placeholder="Cerca agenti, progetti, galassie, chat e costellazioni" style="flex: 1; border: none; outline: none; font-family: inherit; font-size: 16px; color: #1f1838; background: transparent">
+      </label>
+
+      <!-- slim clickable banner -->
+      <button type="button" onClick="{{ goCredit }}" style="position: relative; overflow: hidden; width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 18px; padding: 14px 24px 14px 14px; background: #1a1238; color: #ffffff; border: none; border-radius: 20px; text-align: left; box-shadow: 0 10px 30px rgba(26,18,56,0.18)">
+        <span aria-hidden="true" style="position: absolute; top: 0; bottom: 0; left: 0; width: 18%; background: rgba(255,255,255,0.06); animation: shimmer 4s ease-in-out infinite"></span>
+        <span style="width: 68px; height: 68px; border-radius: 50%; background: #fbefcc; box-shadow: inset 0 0 0 4px #ffffff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative"><svg aria-hidden="true" width="58" height="58" viewBox="0 0 140 140" style="animation: bob 3s ease-in-out infinite"><line x1="70" y1="22" x2="70" y2="34" stroke="#7a5410" stroke-width="4" stroke-linecap="round"></line><circle cx="70" cy="14" r="10" fill="#f2c14e" stroke="#7a5410" stroke-width="2.5"></circle><text x="70" y="19" text-anchor="middle" font-size="13" font-weight="800" font-family="Arial, sans-serif" fill="#7a5410">€</text><rect x="22" y="54" width="10" height="22" rx="5" fill="#7a5410"></rect><rect x="108" y="54" width="10" height="22" rx="5" fill="#7a5410"></rect><rect x="30" y="32" width="80" height="62" rx="22" fill="#e0a526"></rect><rect x="40" y="44" width="60" height="38" rx="15" fill="#1a1238"></rect><circle cx="56" cy="61" r="6" fill="#ffe7a3"></circle><circle cx="84" cy="61" r="9" fill="none" stroke="#ffffff" stroke-width="2.2"></circle><circle cx="84" cy="61" r="5" fill="#ffe7a3"></circle><path d="M92 68 q6 8 2 18" stroke="#ffffff" stroke-width="1.6" fill="none"></path><path d="M62 73 q8 6 16 0" stroke="#ffe7a3" stroke-width="3" fill="none" stroke-linecap="round"></path><rect x="44" y="96" width="52" height="34" rx="14" fill="#e0a526"></rect><path d="M64 96 h12 l-3 6 h-6 z" fill="#3b2a78"></path><path d="M67 102 h6 l3 18 l-6 6 l-6 -6 z" fill="#5b3fb8"></path></svg></span>
+        <span style="display: flex; flex-direction: column; gap: 4px; flex: 1 1 320px; position: relative">
+          <span style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><span style="background: #f2c14e; color: #1a1238; font-weight: 800; font-size: 12px; letter-spacing: 1.5px; padding: 4px 10px; border-radius: 99px">NUOVO</span><span style="font-size: 18px; font-weight: 800">Credit Agent</span></span>
+          <span style="color: #d9d4f0; font-size: 16px">Il tuo analista del credito, pronto in pochi minuti. Lo crei da solo, come gli altri agenti.</span>
+        </span>
+        <span style="display: flex; align-items: center; gap: 8px; color: #f2c14e; font-size: 16px; font-weight: 800; position: relative">Scopri di più<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+      </button>
+
+      <!-- governance -->
+      <section aria-label="Stato della piattaforma" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px">
+        <div style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 12px; font-weight: 800; letter-spacing: 1px; color: #5d5873">CONSUMI DEL MESE</span>
+          <span style="font-size: 18px; font-weight: 800">62% dei crediti inclusi</span>
+          <div style="height: 6px; border-radius: 3px; background: #f3f2f8"><div style="width: 62%; height: 6px; border-radius: 3px; background: #7b5fd6"></div></div>
+          <button type="button" onClick="{{ goPlans }}" style="align-self: flex-start; margin-top: 4px; padding: 0; border: none; background: transparent; color: #3b2a78; font-size: 14px; font-weight: 800">Piano e consumi →</button>
+        </div>
+        <div style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 12px; font-weight: 800; letter-spacing: 1px; color: #5d5873">FONTI E CONNETTORI</span>
+          <span style="font-size: 18px; font-weight: 800">7 di 8 attivi</span>
+          <span style="display: flex; align-items: center; gap: 6px; font-size: 14px; color: #8a3b12"><span style="width: 8px; height: 8px; border-radius: 50%; background: #d9773a"></span>SharePoint: credenziali scadute</span>
+        </div>
+        <div style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 12px; font-weight: 800; letter-spacing: 1px; color: #5d5873">REGISTRO AI ACT</span>
+          <span style="font-size: 18px; font-weight: 800">{{ instanceCount }} agenti registrati</span>
+          <span style="font-size: 14px; color: #4f4a66">Finalità, fonti e responsabile per ogni agente, esportabile</span>
+        </div>
+      </section>
+
+      <!-- agents -->
+      <section id="agenti" style="display: flex; flex-direction: column; gap: 28px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <h2 style="margin: 0; font-size: 30px; font-weight: 800">I tuoi Agenti</h2>
+            <p style="margin: 0; color: #5d5873; font-size: 16px">Passa sopra un agente per scoprire cosa fa. Clicca per la demo o per crearne un altro dello stesso tipo.</p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap">
+            <div style="display: flex; flex-direction: column; gap: 6px; min-width: 170px">
+              <span style="font-size: 14px; color: #5d5873; font-weight: 700">{{ instanceCount }} agenti attivi · {{ activeCount }} di {{ totalCount }} tipi</span>
+              <div style="height: 6px; background: #e4e2ee; border-radius: 3px"><div style="height: 6px; border-radius: 3px; background: #3b2a78; width: {{ progressPct }}%"></div></div>
+            </div>
+            <button type="button" onClick="{{ goLia }}" style="height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid #dcd9e8; background: #ffffff; color: #3b2a78; font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"></path></svg>Crea il tuo con LIA</button>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 32px 14px; justify-items: center">
+          <sc-for list="{{ agents }}" as="item" hint-placeholder-count="7">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 14px">
+              <button type="button" onClick="{{ item.demo }}" onMouseEnter="{{ item.enter }}" onMouseLeave="{{ item.leave }}" onFocus="{{ item.enter }}" onBlur="{{ item.leave }}" aria-label="{{ item.aria }}" style="position: relative; width: 150px; height: 150px; padding: 0; border: none; background: transparent; border-radius: 50%; perspective: 900px">
+                <span style="position: absolute; inset: 0; display: block; transform-style: preserve-3d; transition: transform .7s cubic-bezier(.2,.7,.2,1); transform: rotateY({{ item.rot }}deg)">
+                  <span style="position: absolute; inset: 0; border-radius: 50%; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; align-items: center; justify-content: center; overflow: hidden; background: {{ item.tint }}; box-shadow: inset 0 0 0 6px #ffffff, 0 10px 26px rgba(31,24,56,0.12); {{ item.frontFilter }}">
+<sc-if value="{{ item.isCredit }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="112" height="112" viewBox="0 0 140 140" style="animation: bob 3s ease-in-out infinite"><line x1="70" y1="22" x2="70" y2="34" stroke="#7a5410" stroke-width="4" stroke-linecap="round"></line><circle cx="70" cy="14" r="10" fill="#f2c14e" stroke="#7a5410" stroke-width="2.5"></circle><text x="70" y="19" text-anchor="middle" font-size="13" font-weight="800" font-family="Arial, sans-serif" fill="#7a5410">€</text><rect x="22" y="54" width="10" height="22" rx="5" fill="#7a5410"></rect><rect x="108" y="54" width="10" height="22" rx="5" fill="#7a5410"></rect><rect x="30" y="32" width="80" height="62" rx="22" fill="#e0a526"></rect><rect x="40" y="44" width="60" height="38" rx="15" fill="#1a1238"></rect><circle cx="56" cy="61" r="6" fill="#ffe7a3"></circle><circle cx="84" cy="61" r="9" fill="none" stroke="#ffffff" stroke-width="2.2"></circle><circle cx="84" cy="61" r="5" fill="#ffe7a3"></circle><path d="M92 68 q6 8 2 18" stroke="#ffffff" stroke-width="1.6" fill="none"></path><path d="M62 73 q8 6 16 0" stroke="#ffe7a3" stroke-width="3" fill="none" stroke-linecap="round"></path><rect x="44" y="96" width="52" height="34" rx="14" fill="#e0a526"></rect><path d="M64 96 h12 l-3 6 h-6 z" fill="#3b2a78"></path><path d="M67 102 h6 l3 18 l-6 6 l-6 -6 z" fill="#5b3fb8"></path></svg></sc-if>
+<sc-if value="{{ item.isData }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="112" height="112" viewBox="0 0 140 140" style="animation: bob 3s ease-in-out infinite"><line x1="70" y1="20" x2="70" y2="34" stroke="#2b3f7a" stroke-width="4" stroke-linecap="round"></line><circle cx="70" cy="16" r="7" fill="#f2c14e"></circle><rect x="22" y="54" width="10" height="22" rx="5" fill="#2b3f7a"></rect><rect x="108" y="54" width="10" height="22" rx="5" fill="#2b3f7a"></rect><rect x="30" y="32" width="80" height="62" rx="24" fill="#4f7fe0"></rect><rect x="40" y="44" width="60" height="38" rx="16" fill="#1a1238"></rect><circle cx="56" cy="61" r="6" fill="#8fe3ff"></circle><circle cx="84" cy="61" r="6" fill="#8fe3ff"></circle><path d="M62 72 q8 6 16 0" stroke="#8fe3ff" stroke-width="3" fill="none" stroke-linecap="round"></path><rect x="44" y="96" width="52" height="34" rx="14" fill="#4f7fe0"></rect><rect x="55" y="112" width="7" height="11" rx="2" fill="#ffffff"></rect><rect x="66.5" y="105" width="7" height="18" rx="2" fill="#ffffff"></rect><rect x="78" y="109" width="7" height="14" rx="2" fill="#f2c14e"></rect></svg></sc-if>
+<sc-if value="{{ item.isDoc }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="112" height="112" viewBox="0 0 140 140" style="animation: bob 3.2s ease-in-out infinite"><line x1="70" y1="22" x2="70" y2="34" stroke="#7a3a12" stroke-width="4" stroke-linecap="round"></line><rect x="63" y="12" width="14" height="12" rx="3" fill="#7a3a12"></rect><rect x="22" y="56" width="10" height="20" rx="5" fill="#7a3a12"></rect><rect x="108" y="56" width="10" height="20" rx="5" fill="#7a3a12"></rect><rect x="30" y="32" width="80" height="62" rx="20" fill="#d9773a"></rect><rect x="40" y="44" width="60" height="38" rx="14" fill="#1a1238"></rect><circle cx="56" cy="61" r="4.5" fill="#ffd9bd"></circle><circle cx="84" cy="61" r="4.5" fill="#ffd9bd"></circle><circle cx="56" cy="61" r="10" fill="none" stroke="#ffffff" stroke-width="2.5"></circle><circle cx="84" cy="61" r="10" fill="none" stroke="#ffffff" stroke-width="2.5"></circle><line x1="66" y1="60" x2="74" y2="60" stroke="#ffffff" stroke-width="2.5"></line><path d="M64 75 h12" stroke="#ffd9bd" stroke-width="3" stroke-linecap="round"></path><rect x="44" y="96" width="52" height="34" rx="14" fill="#d9773a"></rect><g transform="rotate(10 112 112)"><rect x="98" y="94" width="28" height="36" rx="4" fill="#ffffff" stroke="#7a3a12" stroke-width="2"></rect><line x1="104" y1="104" x2="120" y2="104" stroke="#d9773a" stroke-width="2.5" stroke-linecap="round"></line><line x1="104" y1="111" x2="120" y2="111" stroke="#d9773a" stroke-width="2.5" stroke-linecap="round"></line><line x1="104" y1="118" x2="114" y2="118" stroke="#d9773a" stroke-width="2.5" stroke-linecap="round"></line></g></svg></sc-if>
+<sc-if value="{{ item.isGpt }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="112" height="112" viewBox="0 0 140 140" style="animation: bob 2.8s ease-in-out infinite"><path d="M94 6 h28 a10 10 0 0 1 10 10 v8 a10 10 0 0 1 -10 10 h-16 l-8 7 v-7 h-4 a10 10 0 0 1 -10 -10 v-8 a10 10 0 0 1 10 -10 z" fill="#ffffff" stroke="#3b2a78" stroke-width="2"></path><circle cx="98" cy="20" r="2.6" fill="#7b5fd6"></circle><circle cx="107" cy="20" r="2.6" fill="#7b5fd6"></circle><circle cx="116" cy="20" r="2.6" fill="#7b5fd6"></circle><rect x="20" y="56" width="10" height="20" rx="5" fill="#3b2a78"></rect><rect x="110" y="56" width="10" height="20" rx="5" fill="#3b2a78"></rect><rect x="28" y="30" width="84" height="66" rx="33" fill="#7b5fd6"></rect><rect x="40" y="44" width="60" height="38" rx="19" fill="#1a1238"></rect><path d="M50 64 q6 -8 12 0" stroke="#d8ccff" stroke-width="3.5" fill="none" stroke-linecap="round"></path><path d="M78 64 q6 -8 12 0" stroke="#d8ccff" stroke-width="3.5" fill="none" stroke-linecap="round"></path><path d="M63 72 q7 6 14 0" stroke="#d8ccff" stroke-width="3" fill="none" stroke-linecap="round"></path><circle cx="46" cy="74" r="3.5" fill="#ff9ac2" opacity="0.8"></circle><circle cx="94" cy="74" r="3.5" fill="#ff9ac2" opacity="0.8"></circle><rect x="44" y="98" width="52" height="32" rx="14" fill="#7b5fd6"></rect><circle cx="70" cy="114" r="7" fill="#ffffff"></circle><circle cx="70" cy="114" r="3" fill="#7b5fd6"></circle></svg></sc-if>
+<sc-if value="{{ item.isHuman }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="112" height="112" viewBox="0 0 140 140" style="animation: bob 3.4s ease-in-out infinite"><rect x="30" y="30" width="80" height="64" rx="28" fill="#2a9d99"></rect><path d="M26 62 a44 44 0 0 1 88 0" stroke="#145754" stroke-width="6" fill="none" stroke-linecap="round"></path><rect x="18" y="52" width="14" height="24" rx="6" fill="#145754"></rect><rect x="108" y="52" width="14" height="24" rx="6" fill="#145754"></rect><path d="M114 76 q0 14 -24 14" stroke="#145754" stroke-width="3" fill="none" stroke-linecap="round"></path><circle cx="88" cy="90" r="4" fill="#f2c14e"></circle><rect x="40" y="42" width="60" height="40" rx="18" fill="#fef3e6"></rect><ellipse cx="56" cy="59" rx="5" ry="6.5" fill="#1a1238"></ellipse><ellipse cx="84" cy="59" rx="5" ry="6.5" fill="#1a1238"></ellipse><circle cx="57.5" cy="57" r="1.8" fill="#ffffff"></circle><circle cx="85.5" cy="57" r="1.8" fill="#ffffff"></circle><path d="M62 71 q8 7 16 0" stroke="#1a1238" stroke-width="3" fill="none" stroke-linecap="round"></path><circle cx="47" cy="70" r="3.5" fill="#ff9ac2"></circle><circle cx="93" cy="70" r="3.5" fill="#ff9ac2"></circle><rect x="44" y="96" width="52" height="34" rx="14" fill="#2a9d99"></rect><path d="M60 104 l10 8 l10 -8" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+<sc-if value="{{ item.isVerif }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="112" height="112" viewBox="0 0 140 140" style="animation: bob 3.1s ease-in-out infinite"><line x1="56" y1="20" x2="60" y2="34" stroke="#1e5a34" stroke-width="4" stroke-linecap="round"></line><line x1="84" y1="20" x2="80" y2="34" stroke="#1e5a34" stroke-width="4" stroke-linecap="round"></line><circle cx="55" cy="17" r="5" fill="#9ee0b3"></circle><circle cx="85" cy="17" r="5" fill="#9ee0b3"></circle><rect x="22" y="54" width="10" height="22" rx="5" fill="#1e5a34"></rect><rect x="108" y="54" width="10" height="22" rx="5" fill="#1e5a34"></rect><rect x="30" y="32" width="80" height="62" rx="18" fill="#3f9a5f"></rect><rect x="40" y="46" width="60" height="34" rx="12" fill="#1a1238"></rect><rect x="47" y="56" width="46" height="12" rx="6" fill="#2b4a38"></rect><circle cx="70" cy="62" r="5.5" fill="#b8f5c8" style="animation: scanx 2.2s ease-in-out infinite"></circle><path d="M64 75 h12" stroke="#b8f5c8" stroke-width="3" stroke-linecap="round"></path><rect x="44" y="96" width="52" height="34" rx="14" fill="#3f9a5f"></rect><path d="M70 101 l11 4 v7 c0 6 -5 10 -11 12 c-6 -2 -11 -6 -11 -12 v-7 z" fill="#ffffff"></path><path d="M65 112 l4 4 l7 -7" stroke="#3f9a5f" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+<sc-if value="{{ item.isWrite }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="112" height="112" viewBox="0 0 140 140" style="animation: bob 2.9s ease-in-out infinite"><line x1="52" y1="18" x2="58" y2="34" stroke="#7a2450" stroke-width="4" stroke-linecap="round"></line><line x1="88" y1="18" x2="82" y2="34" stroke="#7a2450" stroke-width="4" stroke-linecap="round"></line><circle cx="51" cy="15" r="6" fill="#f2c14e"></circle><circle cx="89" cy="15" r="6" fill="#f2c14e"></circle><rect x="22" y="56" width="10" height="20" rx="5" fill="#7a2450"></rect><rect x="108" y="56" width="10" height="20" rx="5" fill="#7a2450"></rect><rect x="30" y="32" width="80" height="62" rx="26" fill="#cc4f86"></rect><rect x="40" y="44" width="60" height="38" rx="17" fill="#1a1238"></rect><circle cx="56" cy="61" r="6" fill="#ffd1e4"></circle><path d="M78 62 q6 -6 12 0" stroke="#ffd1e4" stroke-width="3.5" fill="none" stroke-linecap="round"></path><path d="M63 73 q7 5 14 0" stroke="#ffd1e4" stroke-width="3" fill="none" stroke-linecap="round"></path><rect x="44" y="96" width="52" height="34" rx="14" fill="#cc4f86"></rect><g transform="rotate(-30 112 108)"><rect x="107" y="84" width="10" height="34" rx="3" fill="#f2c14e"></rect><rect x="107" y="84" width="10" height="7" rx="2" fill="#7a2450"></rect><path d="M107 118 l5 9 l5 -9 z" fill="#1a1238"></path></g></svg></sc-if>
+
+                  </span>
+                  <span style="position: absolute; inset: 0; border-radius: 50%; backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(180deg); background: #1a1238; color: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 20px; box-sizing: border-box; text-align: center; box-shadow: inset 0 0 0 5px {{ item.color }}, 0 14px 30px rgba(31,24,56,0.25)">
+                    <span style="font-size: 12.5px; line-height: 1.35; font-weight: 600">{{ item.desc }}</span>
+                    <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; letter-spacing: 0.5px; color: {{ item.light }}"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4v16l13-8z"></path></svg>DEMO</span>
+                  </span>
+                </span>
+                <sc-if value="{{ item.inactive }}" hint-placeholder-val="{{ false }}">
+                  <span style="position: absolute; left: 50%; bottom: -6px; transform: translateX(-50%); background: #ffffff; border: 1px solid #d6d3e2; color: #4a4560; font-size: 11px; font-weight: 800; letter-spacing: 1px; padding: 4px 10px; border-radius: 99px; white-space: nowrap">DA CREARE</span>
+                </sc-if>
+                <sc-if value="{{ item.showNew }}" hint-placeholder-val="{{ false }}">
+                  <span style="position: absolute; top: 4px; right: 0; background: #f2c14e; color: #1a1238; font-size: 11px; font-weight: 800; letter-spacing: 1px; padding: 4px 9px; border-radius: 99px; box-shadow: 0 4px 10px rgba(31,24,56,0.18)">{{ item.newLabel }}</span>
+                </sc-if>
+                <sc-if value="{{ item.multi }}" hint-placeholder-val="{{ false }}">
+                  <span style="position: absolute; top: 4px; left: 0; min-width: 34px; height: 34px; box-sizing: border-box; padding: 0 8px; border-radius: 99px; background: #1a1238; color: #ffffff; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 3px #f3f2f8">×{{ item.count }}</span>
+                </sc-if>
+                <sc-if value="{{ item.isCustom }}" hint-placeholder-val="{{ false }}">
+                  <span style="position: absolute; top: 4px; right: 0; background: #a48cf0; color: #1a1238; font-size: 11px; font-weight: 800; letter-spacing: 1px; padding: 4px 9px; border-radius: 99px">LIA</span>
+                </sc-if>
+              </button>
+              <span style="font-size: 16px; font-weight: 800; text-align: center; color: {{ item.nameColor }}">{{ item.name }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <!-- LIA showcase -->
+      <section style="position: relative; overflow: hidden; background: #0f0b22; color: #ffffff; border-radius: 26px; padding: 44px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center">
+        <svg aria-hidden="true" width="520" height="520" viewBox="0 0 520 520" fill="none" style="position: absolute; left: -200px; bottom: -260px; opacity: 0.6"><circle cx="260" cy="260" r="250" stroke="#2a2058" stroke-width="1.5"></circle><circle cx="260" cy="260" r="180" stroke="#2a2058" stroke-width="1.5" stroke-dasharray="4 10"></circle><circle cx="260" cy="260" r="110" stroke="#2a2058" stroke-width="1.5"></circle></svg>
+        <div style="flex: 1 1 380px; display: flex; flex-direction: column; gap: 18px; position: relative">
+          <span style="display: flex; gap: 8px; flex-wrap: wrap"><span style="font-size: 13px; letter-spacing: 2px; font-weight: 800; color: #120d2a; background: #a48cf0; padding: 6px 14px; border-radius: 99px">LIA</span><span style="font-size: 13px; letter-spacing: 1.5px; font-weight: 800; color: #0f0b22; background: #8fe3b0; padding: 6px 14px; border-radius: 99px">OPEN SOURCE</span></span>
+          <h2 style="margin: 0; font-size: 42px; line-height: 1.1; font-weight: 800; letter-spacing: -0.5px">Crea i tuoi agenti<br><span style="color: #c4b2ff">scrivendo come parli.</span></h2>
+          <p style="margin: 0; color: #d9d4f0; font-size: 18px; line-height: 1.55; max-width: 480px">LIA è il linguaggio di Luxia per creare agenti da soli: descrivi cosa deve fare, da quali fonti partire e quali regole seguire. Al resto pensa la piattaforma.</p>
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <span style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8fe3b0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg>Poche righe in italiano, nessun codice complesso</span>
+            <span style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8fe3b0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg>Usa le fonti già collegate al tuo progetto</span>
+            <span style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8fe3b0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg>Open source: gratis da usare, studiare e migliorare</span>
+          </div>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px">
+            <button type="button" onClick="{{ goLia }}" style="height: 52px; padding: 0 26px; border-radius: 12px; border: none; background: #a48cf0; color: #120d2a; font-size: 17px; font-weight: 800; display: flex; align-items: center; gap: 10px">Prova LIA<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+            <button type="button" onClick="{{ goCons }}" style="height: 52px; padding: 0 22px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.35); background: transparent; color: #ffffff; font-size: 16px; font-weight: 700">Formazione LIA per il team</button>
+          </div>
+        </div>
+        <div aria-hidden="true" style="flex: 1 1 400px; position: relative; display: flex; flex-direction: column; gap: 14px">
+          <div style="background: #1a1238; border: 1px solid #2f2566; border-radius: 18px; overflow: hidden; box-shadow: 0 24px 50px rgba(0,0,0,0.4)">
+            <div style="display: flex; align-items: center; gap: 6px; padding: 12px 16px; background: #221a4a"><span style="width: 10px; height: 10px; border-radius: 50%; background: #ff6b6b"></span><span style="width: 10px; height: 10px; border-radius: 50%; background: #f2c14e"></span><span style="width: 10px; height: 10px; border-radius: 50%; background: #8fe3b0"></span><span style="margin-left: 10px; color: #b3acd6; font-size: 12px; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace">assistente_hr.lia</span></div>
+            <div style="padding: 20px 22px; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 14.5px; line-height: 1.75; color: #e9e6f5; white-space: pre-wrap"><span style="color: #c4b2ff; font-weight: 700">agente</span> <span style="color: #f2c14e">"Assistente HR"</span> <span style="color: #9b95b8">{</span>
+  <span style="color: #c4b2ff; font-weight: 700">ruolo</span><span style="color: #9b95b8">:</span> <span style="color: #f2c14e">"risponde su ferie e policy"</span>
+  <span style="color: #c4b2ff; font-weight: 700">fonti</span><span style="color: #9b95b8">:</span> regolamento_interno<span style="color: #9b95b8">,</span> ccnl
+
+  <span style="color: #c4b2ff; font-weight: 700">quando</span> domanda <span style="color: #9b95b8">{</span>
+    <span style="color: #8fe3ff">cerca</span> nelle fonti
+    <span style="color: #8fe3ff">rispondi</span> in modo semplice<span style="display: inline-block; width: 9px; height: 18px; background: #c4b2ff; vertical-align: -3px; margin-left: 2px; animation: pulse 1s steps(2) infinite"></span>
+  <span style="color: #9b95b8">}</span>
+<span style="color: #9b95b8">}</span></div>
+          </div>
+          <div style="align-self: flex-end; width: 78%; background: #ffffff; color: #1f1838; border-radius: 16px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 18px 40px rgba(0,0,0,0.35); margin-top: -40px; position: relative">
+            <span style="width: 52px; height: 52px; border-radius: 50%; background: #ebe4fc; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="40" height="40" viewBox="0 0 140 140" style="animation: bob 2.8s ease-in-out infinite"><path d="M94 6 h28 a10 10 0 0 1 10 10 v8 a10 10 0 0 1 -10 10 h-16 l-8 7 v-7 h-4 a10 10 0 0 1 -10 -10 v-8 a10 10 0 0 1 10 -10 z" fill="#ffffff" stroke="#3b2a78" stroke-width="2"></path><circle cx="98" cy="20" r="2.6" fill="#7b5fd6"></circle><circle cx="107" cy="20" r="2.6" fill="#7b5fd6"></circle><circle cx="116" cy="20" r="2.6" fill="#7b5fd6"></circle><rect x="20" y="56" width="10" height="20" rx="5" fill="#3b2a78"></rect><rect x="110" y="56" width="10" height="20" rx="5" fill="#3b2a78"></rect><rect x="28" y="30" width="84" height="66" rx="33" fill="#7b5fd6"></rect><rect x="40" y="44" width="60" height="38" rx="19" fill="#1a1238"></rect><path d="M50 64 q6 -8 12 0" stroke="#d8ccff" stroke-width="3.5" fill="none" stroke-linecap="round"></path><path d="M78 64 q6 -8 12 0" stroke="#d8ccff" stroke-width="3.5" fill="none" stroke-linecap="round"></path><path d="M63 72 q7 6 14 0" stroke="#d8ccff" stroke-width="3" fill="none" stroke-linecap="round"></path><circle cx="46" cy="74" r="3.5" fill="#ff9ac2" opacity="0.8"></circle><circle cx="94" cy="74" r="3.5" fill="#ff9ac2" opacity="0.8"></circle><rect x="44" y="98" width="52" height="32" rx="14" fill="#7b5fd6"></rect><circle cx="70" cy="114" r="7" fill="#ffffff"></circle><circle cx="70" cy="114" r="3" fill="#7b5fd6"></circle></svg></span>
+            <span style="display: flex; flex-direction: column; flex: 1; min-width: 0"><span style="font-weight: 800; font-size: 16px">Assistente HR</span><span style="font-size: 13px; color: #4f4a66">2 fonti · su chat e Teams</span></span>
+            <span style="font-size: 12px; font-weight: 800; color: #1f6b3e; background: #ddf3e5; padding: 4px 10px; border-radius: 99px">Pronto</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- process ideas row -->
+      <section style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 13px; letter-spacing: 1.5px; font-weight: 800; color: #5b3fb8">PROCESSI CHE SI POSSONO AUTOMATIZZARE</span>
+            <h2 style="margin: 0; font-size: 30px; font-weight: 800">Idee per i tuoi flussi interni</h2>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <button type="button" onClick="{{ ideasPrev }}" aria-label="Idee precedenti" style="width: 44px; height: 44px; border-radius: 50%; border: 1px solid #dcd9e8; background: #ffffff; color: #1f1838; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></button>
+            <button type="button" onClick="{{ ideasNext }}" aria-label="Idee successive" style="width: 44px; height: 44px; border-radius: 50%; border: 1px solid #dcd9e8; background: #ffffff; color: #1f1838; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg></button>
+          </div>
+        </div>
+        <div id="ideas-row" style="display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 2px 16px; scrollbar-width: thin">
+          <sc-for list="{{ ideas }}" as="idea" hint-placeholder-count="5">
+            <article style="flex: 0 0 270px; scroll-snap-align: start; background: #ffffff; border: 1px solid #e4e2ee; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 10px">
+              <span style="align-self: flex-start; font-size: 11px; font-weight: 800; letter-spacing: 1px; padding: 4px 10px; border-radius: 99px; {{ idea.deptStyle }}">{{ idea.deptLabel }}</span>
+              <h3 style="margin: 0; font-size: 18px; font-weight: 800; line-height: 1.25">{{ idea.title }}</h3>
+              <p style="margin: 0; color: #4f4a66; font-size: 14.5px; line-height: 1.5">{{ idea.text }}</p>
+              <div style="flex-grow: 1"></div>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px">
+                <sc-for list="{{ idea.agents }}" as="ag" hint-placeholder-count="2">
+                  <span style="display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; color: #2a2148; background: #f3f2f8; padding: 4px 9px; border-radius: 8px"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{ ag.color }}"></span>{{ ag.name }}</span>
+                </sc-for>
+              </div>
+              <button type="button" onClick="{{ idea.pick }}" style="margin-top: 4px; padding: 0; border: none; background: transparent; color: #3b2a78; font-size: 15px; font-weight: 800; text-align: left">Realizziamola insieme →</button>
+            </article>
+          </sc-for>
+        </div>
+      </section>
+
+      <!-- your idea -->
+      <section style="background: #ebe4fc; border-radius: 26px; padding: 40px; display: flex; flex-direction: column; gap: 26px">
+        <div style="display: flex; flex-direction: column; gap: 8px; max-width: 720px">
+          <span style="font-size: 13px; letter-spacing: 1.5px; font-weight: 800; color: #3b2a78">COSTRUIAMOLO INSIEME</span>
+          <h2 style="margin: 0; font-size: 32px; line-height: 1.15; font-weight: 800">Da dove vuoi partire?</h2>
+          <p style="margin: 0; color: #2a2148; font-size: 16px; line-height: 1.55">Che tu abbia già un processo in mente o voglia capire dove l’AI può fare la differenza, ci pensiamo insieme.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch">
+        <div style="flex: 1 1 380px; background: #ffffff; border-radius: 20px; padding: 26px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 12px 30px rgba(59,42,120,0.12)">
+          <span style="display: flex; align-items: center; gap: 12px"><span style="width: 44px; height: 44px; border-radius: 12px; background: #fbefcc; color: #7a5410; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"></path></svg></span><span style="display: flex; flex-direction: column"><span style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #7a5410">HAI GIÀ UN’IDEA</span><span style="font-size: 21px; font-weight: 800">Proponi un processo</span></span></span>
+          <label for="idea-input" style="font-size: 15px; font-weight: 700; color: #4f4a66">Quale processo vorresti affidare a un agente?</label>
+          <textarea id="idea-input" rows="3" value="{{ ideaText }}" onChange="{{ setIdeaText }}" placeholder="Es. ogni mese raccogliamo i dati di vendita da tre gestionali e prepariamo a mano il report per la direzione…" style="border-radius: 12px; border: 1px solid #cfcbe0; padding: 12px 14px; font-family: inherit; font-size: 15px; resize: vertical; color: #1f1838"></textarea>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+            <span style="font-size: 13px; color: #5d5873; font-weight: 700">Spunti:</span>
+            <sc-for list="{{ ideaSeeds }}" as="sd" hint-placeholder-count="4">
+              <button type="button" onClick="{{ sd.pick }}" style="height: 32px; padding: 0 12px; border-radius: 99px; border: 1px solid #dcd9e8; background: #ffffff; color: #1f1838; font-size: 13px; font-weight: 700">{{ sd.label }}</button>
+            </sc-for>
+          </div>
+          <div style="flex-grow: 1"></div>
+          <button type="button" onClick="{{ proposeIdea }}" style="align-self: flex-start; height: 50px; padding: 0 24px; border-radius: 12px; border: none; background: #3b2a78; color: #ffffff; font-size: 16px; font-weight: 800">Proponi l’idea</button>
+        </div>
+        <div style="flex: 1 1 380px; background: #1a1238; color: #ffffff; border-radius: 20px; padding: 26px; display: flex; flex-direction: column; gap: 14px; position: relative; overflow: hidden">
+          <svg aria-hidden="true" width="260" height="260" viewBox="0 0 260 260" fill="none" style="position: absolute; right: -90px; top: -90px; opacity: 0.6"><circle cx="130" cy="130" r="120" stroke="#3a2c74" stroke-width="1.5"></circle><circle cx="130" cy="130" r="80" stroke="#3a2c74" stroke-width="1.5" stroke-dasharray="4 8"></circle><circle cx="130" cy="10" r="5" fill="#f2c14e"></circle></svg>
+          <span style="display: flex; align-items: center; gap: 12px; position: relative"><span style="width: 44px; height: 44px; border-radius: 12px; background: #2a2058; color: #c4b2ff; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4M8 11h6M11 8v6"></path></svg></span><span style="display: flex; flex-direction: column"><span style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #c4b2ff">NON SAI DA DOVE PARTIRE</span><span style="font-size: 21px; font-weight: 800">Analizziamo insieme il tuo business</span></span></span>
+          <p style="margin: 0; color: #d9d4f0; font-size: 15px; line-height: 1.55; position: relative">Un incontro con il nostro team per guardare i tuoi processi con occhi nuovi e scoprire dove un agente può farti risparmiare tempo.</p>
+          <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; position: relative">
+            <li style="display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600"><span style="width: 28px; height: 28px; border-radius: 50%; background: #a48cf0; color: #120d2a; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0">1</span>Mappiamo i tuoi flussi e i tuoi dati</li>
+            <li style="display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600"><span style="width: 28px; height: 28px; border-radius: 50%; background: #a48cf0; color: #120d2a; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0">2</span>Troviamo dove l’AI genera valore misurabile</li>
+            <li style="display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600"><span style="width: 28px; height: 28px; border-radius: 50%; background: #a48cf0; color: #120d2a; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0">3</span>Ti proponiamo una roadmap di agenti</li>
+          </ol>
+          <div style="flex-grow: 1"></div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; position: relative">
+            <button type="button" onClick="{{ bookAnalysis }}" style="height: 50px; padding: 0 24px; border-radius: 12px; border: none; background: #f2c14e; color: #1a1238; font-size: 16px; font-weight: 800">Prenota l’analisi</button>
+            <a href="https://www.hiluxia.com/prova-luxia" target="_blank" rel="noopener" style="color: #ffffff; font-size: 15px; font-weight: 700">o una demo di 30 minuti ↗</a>
+          </div>
+        </div>
+        </div>
+      </section>
+
+      <!-- news -->
+      <section style="display: flex; flex-direction: column; gap: 20px">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 13px; letter-spacing: 1.5px; font-weight: 800; color: #5b3fb8">NEWS DA LUXIA</span>
+            <h2 style="margin: 0; font-size: 30px; font-weight: 800">Le ultime novità</h2>
+          </div>
+          <a href="https://www.hiluxia.com/blog" target="_blank" rel="noopener" style="font-weight: 700; font-size: 16px; text-decoration: none">Tutte le news ↗</a>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 16px">
+          <article style="flex: 2 1 460px; background: #0f0b22; color: #ffffff; border-radius: 22px; padding: 30px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 24px; align-items: center; position: relative; overflow: hidden">
+            <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 12px; position: relative">
+              <span style="align-self: flex-start; font-size: 12px; font-weight: 800; letter-spacing: 1px; color: #0f0b22; background: #8fe3b0; padding: 4px 10px; border-radius: 99px">LUXIA POD</span>
+              <h3 style="margin: 0; font-size: 26px; line-height: 1.2; font-weight: 800">La tua AI privata, in un unico device sulla scrivania.</h3>
+              <p style="margin: 0; color: #d9d4f0; font-size: 15px; line-height: 1.55">La piattaforma Luxia preinstallata su architettura NVIDIA DGX Spark: si installa nella rete locale in pochi minuti e modelli, dati e agenti restano al 100% in locale.</p>
+              <button type="button" onClick="{{ podInfo }}" style="align-self: flex-start; margin-top: 4px; height: 46px; padding: 0 20px; border-radius: 10px; border: none; background: #ffffff; color: #0f0b22; font-size: 15px; font-weight: 800">Voglio saperne di più</button>
+            </div>
+            <svg aria-hidden="true" width="220" height="180" viewBox="0 0 220 180" fill="none" style="flex: 0 0 auto; position: relative">
+              <ellipse cx="110" cy="160" rx="90" ry="10" fill="#000000" opacity="0.35"></ellipse>
+              <path d="M30 70 L110 40 L190 70 L110 100 Z" fill="#3a3d48"></path>
+              <path d="M30 70 L110 100 L110 150 L30 120 Z" fill="#23252d"></path>
+              <path d="M190 70 L110 100 L110 150 L190 120 Z" fill="#2c2e37"></path>
+              <path d="M44 92 L96 112" stroke="#8fe3b0" stroke-width="3" stroke-linecap="round" style="animation: pulse 2s ease-in-out infinite"></path>
+              <path d="M124 112 L176 92" stroke="#3a3d48" stroke-width="2"></path>
+              <path d="M124 120 L176 100" stroke="#3a3d48" stroke-width="2"></path>
+              <path d="M124 128 L176 108" stroke="#3a3d48" stroke-width="2"></path>
+              <text x="110" y="74" text-anchor="middle" font-size="11" font-weight="700" font-family="Arial, sans-serif" fill="#c9c2e8" letter-spacing="3">LUXIA</text>
+            </svg>
+          </article>
+          <div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 16px">
+            <sc-for list="{{ news }}" as="nw" hint-placeholder-count="3">
+              <a href="{{ nw.href }}" target="_blank" rel="noopener" style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: #1f1838">
+                <span style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px; font-weight: 800; letter-spacing: 1px; color: #5b3fb8"><span>{{ nw.tag }}</span><span style="color: #5d5873; font-weight: 700; letter-spacing: 0">{{ nw.date }}</span></span>
+                <span style="font-size: 16px; font-weight: 800; line-height: 1.3">{{ nw.title }}</span>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+
+      <!-- success stories -->
+      <section style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 13px; letter-spacing: 1.5px; font-weight: 800; color: #5b3fb8">ISPIRAZIONE</span>
+            <h2 style="margin: 0; font-size: 30px; font-weight: 800">Casi d’uso già realizzati</h2>
+            <p style="margin: 0; color: #5d5873; font-size: 16px">Cosa hanno costruito altre aziende e PA con gli stessi agenti: prendi spunto per i tuoi progetti.</p>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <button type="button" onClick="{{ casesPrev }}" aria-label="Progetti precedenti" style="width: 44px; height: 44px; border-radius: 50%; border: 1px solid #dcd9e8; background: #ffffff; color: #1f1838; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></button>
+            <button type="button" onClick="{{ casesNext }}" aria-label="Progetti successivi" style="width: 44px; height: 44px; border-radius: 50%; border: 1px solid #dcd9e8; background: #ffffff; color: #1f1838; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg></button>
+          </div>
+        </div>
+        <div id="cases-row" style="display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 2px 16px; scrollbar-width: thin">
+          <sc-for list="{{ cases }}" as="cs" hint-placeholder-count="5">
+            <article style="flex: 0 0 340px; scroll-snap-align: start; background: #ffffff; border: 1px solid #e4e2ee; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column">
+              <div style="position: relative; height: 170px; background: {{ cs.bg }}">
+<sc-if value="{{ cs.isFactory }}" hint-placeholder-val="{{ true }}"><svg aria-hidden="true" width="100%" height="170" viewBox="0 0 340 170" preserveAspectRatio="xMidYMid slice"><rect width="340" height="170" fill="#e2eafc"></rect><circle cx="270" cy="40" r="22" fill="#ffffff" opacity="0.7"></circle><rect x="60" y="40" width="16" height="60" fill="#8fa8e0"></rect><rect x="92" y="54" width="16" height="46" fill="#8fa8e0"></rect><path d="M40 170 V95 L90 70 V95 L140 70 V95 L190 70 V95 L240 70 V170 Z" fill="#4f7fe0"></path><rect x="60" y="115" width="22" height="18" rx="3" fill="#e2eafc"></rect><rect x="110" y="115" width="22" height="18" rx="3" fill="#e2eafc"></rect><rect x="160" y="115" width="22" height="18" rx="3" fill="#f2c14e"></rect><rect x="250" y="110" width="60" height="60" rx="8" fill="#2b3f7a"></rect><rect x="262" y="140" width="8" height="18" fill="#8fe3ff"></rect><rect x="275" y="130" width="8" height="28" fill="#8fe3ff"></rect><rect x="288" y="122" width="8" height="36" fill="#f2c14e"></rect><circle cx="70" cy="28" r="9" fill="#ffffff" opacity="0.8"></circle><circle cx="84" cy="20" r="7" fill="#ffffff" opacity="0.6"></circle></svg></sc-if>
+<sc-if value="{{ cs.isBuild }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="100%" height="170" viewBox="0 0 340 170" preserveAspectRatio="xMidYMid slice"><rect width="340" height="170" fill="#fbe7d9"></rect><circle cx="60" cy="40" r="20" fill="#ffffff" opacity="0.7"></circle><rect x="230" y="30" width="6" height="140" fill="#7a3a12"></rect><rect x="150" y="30" width="150" height="6" fill="#7a3a12"></rect><line x1="170" y1="36" x2="170" y2="80" stroke="#7a3a12" stroke-width="2"></line><rect x="160" y="80" width="20" height="14" fill="#f2c14e"></rect><rect x="40" y="80" width="100" height="90" fill="#d9773a"></rect><rect x="40" y="70" width="100" height="12" fill="#b85f27"></rect><rect x="54" y="96" width="18" height="16" fill="#fbe7d9"></rect><rect x="82" y="96" width="18" height="16" fill="#fbe7d9"></rect><rect x="110" y="96" width="18" height="16" fill="#fbe7d9"></rect><rect x="54" y="124" width="18" height="16" fill="#fbe7d9"></rect><rect x="82" y="124" width="18" height="16" fill="#f2c14e"></rect><rect x="110" y="124" width="18" height="16" fill="#fbe7d9"></rect><rect x="160" y="120" width="56" height="50" fill="#e8a678"></rect><path d="M160 120 h56 M174 120 v50 M188 120 v50 M202 120 v50 M160 136 h56 M160 152 h56" stroke="#b85f27" stroke-width="2"></path></svg></sc-if>
+<sc-if value="{{ cs.isBank }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="100%" height="170" viewBox="0 0 340 170" preserveAspectRatio="xMidYMid slice"><rect width="340" height="170" fill="#dcf1e3"></rect><circle cx="280" cy="38" r="20" fill="#ffffff" opacity="0.7"></circle><path d="M90 70 L170 32 L250 70 Z" fill="#1e5a34"></path><rect x="96" y="70" width="148" height="10" fill="#2f7a4a"></rect><rect x="108" y="84" width="14" height="60" fill="#3f9a5f"></rect><rect x="138" y="84" width="14" height="60" fill="#3f9a5f"></rect><rect x="188" y="84" width="14" height="60" fill="#3f9a5f"></rect><rect x="218" y="84" width="14" height="60" fill="#3f9a5f"></rect><rect x="160" y="100" width="20" height="44" rx="10" fill="#1e5a34"></rect><rect x="86" y="144" width="168" height="12" fill="#2f7a4a"></rect><circle cx="170" cy="56" r="9" fill="#f2c14e"></circle><text x="170" y="60" text-anchor="middle" font-size="11" font-weight="800" font-family="Arial, sans-serif" fill="#1e5a34">€</text><rect x="20" y="110" width="44" height="54" rx="6" fill="#ffffff"></rect><path d="M30 124 h24 M30 134 h24 M30 144 h16" stroke="#3f9a5f" stroke-width="3" stroke-linecap="round"></path></svg></sc-if>
+<sc-if value="{{ cs.isPa }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="100%" height="170" viewBox="0 0 340 170" preserveAspectRatio="xMidYMid slice"><rect width="340" height="170" fill="#ebe4fc"></rect><circle cx="60" cy="40" r="20" fill="#ffffff" opacity="0.7"></circle><rect x="150" y="30" width="40" height="40" fill="#5b3fb8"></rect><circle cx="170" cy="50" r="12" fill="#ffffff"></circle><path d="M170 50 v-8 M170 50 h6" stroke="#3b2a78" stroke-width="2.5" stroke-linecap="round"></path><path d="M100 76 L170 62 L240 76 Z" fill="#3b2a78"></path><rect x="100" y="76" width="140" height="94" fill="#7b5fd6"></rect><rect x="116" y="92" width="20" height="26" rx="10" fill="#ebe4fc"></rect><rect x="160" y="92" width="20" height="26" rx="10" fill="#ebe4fc"></rect><rect x="204" y="92" width="20" height="26" rx="10" fill="#ebe4fc"></rect><rect x="156" y="130" width="28" height="40" rx="14" fill="#3b2a78"></rect><circle cx="270" cy="140" r="10" fill="#2a9d99"></circle><rect x="262" y="150" width="16" height="20" rx="6" fill="#2a9d99"></rect><circle cx="300" cy="138" r="10" fill="#cc4f86"></circle><rect x="292" y="148" width="16" height="22" rx="6" fill="#cc4f86"></rect></svg></sc-if>
+<sc-if value="{{ cs.isMkt }}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="100%" height="170" viewBox="0 0 340 170" preserveAspectRatio="xMidYMid slice"><rect width="340" height="170" fill="#fae0ec"></rect><circle cx="280" cy="40" r="20" fill="#ffffff" opacity="0.7"></circle><rect x="40" y="50" width="150" height="100" rx="12" fill="#ffffff"></rect><rect x="54" y="64" width="60" height="40" rx="6" fill="#cc4f86"></rect><path d="M124 70 h52 M124 82 h40 M124 94 h46 M54 118 h122 M54 130 h90" stroke="#f6abcb" stroke-width="5" stroke-linecap="round"></path><path d="M220 90 L270 66 V134 L220 110 Z" fill="#cc4f86"></path><rect x="206" y="90" width="16" height="20" rx="4" fill="#7a2450"></rect><path d="M282 82 q12 18 0 36 M292 72 q22 28 0 56" stroke="#7a2450" stroke-width="4" fill="none" stroke-linecap="round"></path></svg></sc-if>
+
+                <span style="position: absolute; left: 14px; top: 14px; font-size: 11px; font-weight: 800; letter-spacing: 1px; background: #ffffff; color: #1f1838; padding: 4px 10px; border-radius: 99px">{{ cs.sector }}</span>
+                <sc-if value="{{ cs.hasResult }}" hint-placeholder-val="{{ false }}">
+                  <span style="position: absolute; right: 14px; bottom: 14px; font-size: 15px; font-weight: 800; background: #1a1238; color: #8fe3b0; padding: 8px 12px; border-radius: 12px">{{ cs.result }}</span>
+                </sc-if>
+              </div>
+              <div style="padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1">
+                <h3 style="margin: 0; font-size: 20px; font-weight: 800">{{ cs.name }}</h3>
+                <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; font-weight: 800; letter-spacing: 1px; color: #5d5873">LA SFIDA</span><span style="font-size: 14.5px; line-height: 1.5; color: #2a2148">{{ cs.challenge }}</span></div>
+                <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; font-weight: 800; letter-spacing: 1px; color: #1f6b3e">IL VALORE</span><span style="font-size: 14.5px; line-height: 1.5; color: #2a2148">{{ cs.value }}</span></div>
+                <div style="flex-grow: 1"></div>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px">
+                  <sc-for list="{{ cs.agents }}" as="ag" hint-placeholder-count="2">
+                    <span style="display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; color: #2a2148; background: #f3f2f8; padding: 4px 9px; border-radius: 8px"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{ ag.color }}"></span>{{ ag.name }}</span>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ cs.hasLink }}" hint-placeholder-val="{{ true }}">
+                  <a href="{{ cs.href }}" target="_blank" rel="noopener" style="font-size: 15px; font-weight: 800; text-decoration: none">Leggi la storia ↗</a>
+                </sc-if>
+                <sc-if value="{{ cs.noLink }}" hint-placeholder-val="{{ false }}">
+                  <button type="button" onClick="{{ cs.ask }}" style="align-self: flex-start; padding: 0; border: none; background: transparent; color: #3b2a78; font-size: 15px; font-weight: 800">Chiedi i dettagli →</button>
+                </sc-if>
+              </div>
+            </article>
+          </sc-for>
+          <button type="button" onClick="{{ goCons }}" style="flex: 0 0 280px; scroll-snap-align: start; background: #ebe4fc; border: 2px dashed #a48cf0; border-radius: 20px; padding: 26px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 10px; text-align: left; color: #1f1838">
+            <span style="font-size: 12px; font-weight: 800; letter-spacing: 1px; color: #3b2a78">IL PROSSIMO</span>
+            <span style="font-size: 22px; font-weight: 800">Il tuo progetto</span>
+            <span style="font-size: 15px; color: #2a2148; line-height: 1.5">Raccontaci il processo: lo trasformiamo in un agente.</span>
+            <span style="font-size: 15px; font-weight: 800; color: #3b2a78">Parliamone →</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- projects -->
+      <section style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <h2 style="margin: 0; font-size: 26px; font-weight: 800">I tuoi progetti</h2>
+          <a href="#" style="font-weight: 700; font-size: 16px; text-decoration: none">View all</a>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px">
+          <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
+            <a href="#" style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #1f1838">
+              <span style="font-size: 12px; letter-spacing: 1.5px; font-weight: 800; color: #5b3fb8">PROJECT</span>
+              <span style="font-size: 18px; font-weight: 800">{{ p.name }}</span>
+              <span style="font-size: 14px; color: #4f4a66">{{ p.stats }}</span>
+              <span style="font-size: 13px; color: #5d5873">{{ p.updated }}</span>
+            </a>
+          </sc-for>
+        </div>
+      </section>
+    </div>
+    </sc-if>
+
+    <!-- ============ CREDIT AGENT ============ -->
+    <sc-if value="{{ isCredit }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; gap: 40px">
+      <button type="button" onClick="{{ goHome }}" style="align-self: flex-start; height: 40px; padding: 0 14px 0 8px; border-radius: 10px; border: 1px solid #dcd9e8; background: #ffffff; color: #1f1838; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 6px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>Home</button>
+
+      <section aria-label="Nuova soluzione: Credit Agent" style="position: relative; overflow: hidden; background: #1a1238; color: #ffffff; border-radius: 24px; padding: 40px 44px; display: flex; flex-wrap: wrap; align-items: center; gap: 36px">
+        <svg aria-hidden="true" width="560" height="560" viewBox="0 0 560 560" fill="none" style="position: absolute; right: -140px; top: -170px; opacity: 0.5; animation: spin 60s linear infinite"><circle cx="280" cy="280" r="270" stroke="#3a2c74" stroke-width="1.5"></circle><circle cx="280" cy="280" r="210" stroke="#3a2c74" stroke-width="1.5" stroke-dasharray="4 10"></circle><circle cx="280" cy="280" r="150" stroke="#3a2c74" stroke-width="1.5"></circle><circle cx="280" cy="10" r="6" fill="#f2c14e"></circle><circle cx="490" cy="280" r="4" fill="#a48cf0"></circle><circle cx="130" cy="280" r="5" fill="#f2c14e"></circle></svg>
+
+        <div style="flex: 1 1 440px; display: flex; flex-direction: column; gap: 18px; position: relative">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+            <span style="display: flex; align-items: center; gap: 6px; background: #f2c14e; color: #1a1238; font-weight: 800; font-size: 13px; letter-spacing: 1.5px; padding: 6px 12px; border-radius: 99px"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"></path></svg>NUOVA SOLUZIONE</span>
+            <span style="color: #c9c2e8; font-size: 15px; font-weight: 600">Credit Agent · da oggi sulla piattaforma</span>
+          </div>
+          <h2 style="margin: 0; font-size: 40px; line-height: 1.12; font-weight: 800; letter-spacing: -0.5px; max-width: 560px">Il tuo analista del credito,<br><span style="color: #f2c14e">pronto in pochi minuti.</span></h2>
+          <p style="margin: 0; color: #d9d4f0; font-size: 17px; line-height: 1.55; max-width: 540px">Carichi la pratica, lui legge tutto e ti consegna il dossier completo. Tu decidi, lui prepara.</p>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 2px">
+            <span style="display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600"><span style="width: 32px; height: 32px; border-radius: 10px; background: #2a2058; display: flex; align-items: center; justify-content: center; color: #f2c14e; flex-shrink: 0"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><path d="M14 3v6h6"></path></svg></span>Legge bilanci, Centrale Rischi e documenti del cliente</span>
+            <span style="display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600"><span style="width: 32px; height: 32px; border-radius: 10px; background: #2a2058; display: flex; align-items: center; justify-content: center; color: #f2c14e; flex-shrink: 0"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg></span>Calcola gli indicatori e propone un rating interno</span>
+            <span style="display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600"><span style="width: 32px; height: 32px; border-radius: 10px; background: #2a2058; display: flex; align-items: center; justify-content: center; color: #f2c14e; flex-shrink: 0"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.5l4 4L8 20H4v-4z"></path></svg></span>Scrive la proposta di affidamento, pronta da firmare</span>
+          </div>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px">
+            <sc-if value="{{ creditTodo }}" hint-placeholder-val="{{ true }}">
+              <button type="button" onClick="{{ createCredit }}" style="height: 52px; padding: 0 26px; border-radius: 12px; border: none; background: #f2c14e; color: #1a1238; font-size: 17px; font-weight: 800; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 24px rgba(242,193,78,0.3)">Crea il tuo Credit Agent<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+            </sc-if>
+            <sc-if value="{{ creditDone }}" hint-placeholder-val="{{ false }}">
+              <button type="button" style="height: 52px; padding: 0 26px; border-radius: 12px; border: none; background: #8fe3b0; color: #1a1238; font-size: 17px; font-weight: 800; display: flex; align-items: center; gap: 10px"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg>Apri il tuo Credit Agent</button>
+            </sc-if>
+            <button type="button" onClick="{{ demoCredit }}" style="height: 52px; padding: 0 22px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.35); background: transparent; color: #ffffff; font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4v16l13-8z"></path></svg>Guarda la demo</button>
+          </div>
+          <span style="color: #b3acd6; font-size: 14px">Nessuna configurazione tecnica: lo crei da solo, come gli altri agenti.</span>
+        </div>
+
+        <div style="flex: 1 1 360px; max-width: 440px; position: relative; display: flex; flex-direction: column; align-items: center">
+          <div style="width: 150px; height: 150px; border-radius: 50%; background: #fbefcc; box-shadow: inset 0 0 0 6px #ffffff, 0 0 0 10px rgba(242,193,78,0.18), 0 16px 40px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; margin-bottom: -34px; position: relative; z-index: 2">
+<svg aria-hidden="true" width="118" height="118" viewBox="0 0 140 140" style="animation: bob 3s ease-in-out infinite"><line x1="70" y1="22" x2="70" y2="34" stroke="#7a5410" stroke-width="4" stroke-linecap="round"></line><circle cx="70" cy="14" r="10" fill="#f2c14e" stroke="#7a5410" stroke-width="2.5"></circle><text x="70" y="19" text-anchor="middle" font-size="13" font-weight="800" font-family="Arial, sans-serif" fill="#7a5410">€</text><rect x="22" y="54" width="10" height="22" rx="5" fill="#7a5410"></rect><rect x="108" y="54" width="10" height="22" rx="5" fill="#7a5410"></rect><rect x="30" y="32" width="80" height="62" rx="22" fill="#e0a526"></rect><rect x="40" y="44" width="60" height="38" rx="15" fill="#1a1238"></rect><circle cx="56" cy="61" r="6" fill="#ffe7a3"></circle><circle cx="84" cy="61" r="9" fill="none" stroke="#ffffff" stroke-width="2.2"></circle><circle cx="84" cy="61" r="5" fill="#ffe7a3"></circle><path d="M92 68 q6 8 2 18" stroke="#ffffff" stroke-width="1.6" fill="none"></path><path d="M62 73 q8 6 16 0" stroke="#ffe7a3" stroke-width="3" fill="none" stroke-linecap="round"></path><rect x="44" y="96" width="52" height="34" rx="14" fill="#e0a526"></rect><path d="M64 96 h12 l-3 6 h-6 z" fill="#3b2a78"></path><path d="M67 102 h6 l3 18 l-6 6 l-6 -6 z" fill="#5b3fb8"></path></svg>
+          </div>
+          <div aria-hidden="true" style="width: 100%; background: #ffffff; color: #1f1838; border-radius: 18px; padding: 50px 22px 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 24px 50px rgba(0,0,0,0.35)">
+            <div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #5d5873">PRATICA · [NOME CLIENTE]</span><span style="font-size: 12px; font-weight: 700; color: #1f6b3e; background: #ddf3e5; padding: 3px 8px; border-radius: 99px">In analisi</span></div>
+            <div style="display: flex; flex-direction: column; gap: 9px">
+              <span style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600"><span style="width: 20px; height: 20px; border-radius: 50%; background: #3f9a5f; color: #ffffff; display: flex; align-items: center; justify-content: center; animation: stepon 8s infinite; animation-delay: 0s"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></span>Bilanci degli ultimi 3 anni letti</span>
+              <span style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600"><span style="width: 20px; height: 20px; border-radius: 50%; background: #3f9a5f; color: #ffffff; display: flex; align-items: center; justify-content: center; animation: stepon 8s infinite; animation-delay: 1.2s"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></span>Centrale Rischi verificata</span>
+              <span style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600"><span style="width: 20px; height: 20px; border-radius: 50%; background: #3f9a5f; color: #ffffff; display: flex; align-items: center; justify-content: center; animation: stepon 8s infinite; animation-delay: 2.4s"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></span>Indicatori calcolati</span>
+              <span style="display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600"><span style="width: 20px; height: 20px; border-radius: 50%; background: #3f9a5f; color: #ffffff; display: flex; align-items: center; justify-content: center; animation: stepon 8s infinite; animation-delay: 3.6s"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></span>Proposta di affidamento scritta</span>
+            </div>
+            <div style="border-top: 1px solid #ece9f3; padding-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; animation: reveal 8s infinite; animation-delay: 0s">
+              <div style="display: flex; flex-direction: column"><span style="font-size: 12px; color: #5d5873; font-weight: 700">Rating proposto</span><span style="font-size: 30px; font-weight: 800; line-height: 1.1">A–</span></div>
+              <span style="font-size: 13px; font-weight: 800; color: #1a1238; background: #f2c14e; padding: 8px 12px; border-radius: 10px">Dossier pronto</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <section style="display: flex; flex-direction: column; gap: 20px">
+        <h2 style="margin: 0; font-size: 28px; font-weight: 800">Come funziona</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px">
+          <div style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 10px"><span style="width: 40px; height: 40px; border-radius: 12px; background: #fbefcc; color: #7a5410; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px">1</span><h3 style="margin: 0; font-size: 20px; font-weight: 800">Carica la pratica</h3><p style="margin: 0; color: #4f4a66; font-size: 15px; line-height: 1.55">Trascini bilanci, visure e documenti del cliente, oppure colleghi le fonti già presenti nel progetto.</p></div>
+          <div style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 10px"><span style="width: 40px; height: 40px; border-radius: 12px; background: #fbefcc; color: #7a5410; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px">2</span><h3 style="margin: 0; font-size: 20px; font-weight: 800">L’agente analizza</h3><p style="margin: 0; color: #4f4a66; font-size: 15px; line-height: 1.55">Legge i documenti, incrocia i dati con la Centrale Rischi e calcola gli indicatori secondo le tue policy.</p></div>
+          <div style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 10px"><span style="width: 40px; height: 40px; border-radius: 12px; background: #fbefcc; color: #7a5410; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px">3</span><h3 style="margin: 0; font-size: 20px; font-weight: 800">Ricevi il dossier</h3><p style="margin: 0; color: #4f4a66; font-size: 15px; line-height: 1.55">Rating proposto, punti di attenzione e bozza di proposta, con ogni dato collegato alla sua fonte.</p></div>
+        </div>
+      </section>
+
+      <section style="display: flex; flex-wrap: wrap; gap: 20px">
+        <div style="flex: 3 1 420px; background: #ffffff; border: 1px solid #e4e2ee; border-radius: 20px; padding: 30px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+          <h2 style="margin: 0; font-size: 24px; font-weight: 800">Cosa trovi nel dossier</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px 24px">
+            <sc-for list="{{ dossierItems }}" as="d" hint-placeholder-count="6">
+              <span style="display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2e8b57" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg>{{ d }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="flex: 2 1 300px; background: #fbefcc; border-radius: 20px; padding: 30px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+          <h2 style="margin: 0; font-size: 24px; font-weight: 800">Pensato per</h2>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            <sc-for list="{{ creditFor }}" as="c" hint-placeholder-count="4">
+              <span style="background: #ffffff; color: #1f1838; font-weight: 700; font-size: 15px; padding: 8px 14px; border-radius: 99px">{{ c }}</span>
+            </sc-for>
+          </div>
+          <p style="margin: 4px 0 0; color: #4a3a12; font-size: 15px; line-height: 1.55">La decisione finale resta sempre tua: l’agente prepara, spiega e cita le fonti.</p>
+        </div>
+      </section>
+
+      <section style="display: flex; flex-direction: column; gap: 14px">
+        <h2 style="margin: 0; font-size: 24px; font-weight: 800">Domande frequenti</h2>
+        <details style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 14px; padding: 18px 22px"><summary style="font-size: 17px; font-weight: 700">Serve un team tecnico per crearlo?</summary><p style="margin: 10px 0 0; color: #4f4a66; font-size: 15px; line-height: 1.55">No. Lo crei da solo in pochi passi, come gli altri agenti. Se vuoi personalizzarlo a fondo puoi usare LIA.</p></details>
+        <details style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 14px; padding: 18px 22px"><summary style="font-size: 17px; font-weight: 700">Posso adattarlo alle policy di credito della mia azienda?</summary><p style="margin: 10px 0 0; color: #4f4a66; font-size: 15px; line-height: 1.55">Sì: puoi scrivere le tue regole con LIA, oppure farti affiancare dai nostri consulenti.</p></details>
+        <details style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 14px; padding: 18px 22px"><summary style="font-size: 17px; font-weight: 700">Quali documenti legge?</summary><p style="margin: 10px 0 0; color: #4f4a66; font-size: 15px; line-height: 1.55">Bilanci, Centrale Rischi, visure camerali e qualsiasi documento caricato nella pratica.</p></details>
+      </section>
+
+      <section style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 22px; padding: 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 6px; flex: 1 1 360px"><h2 style="margin: 0; font-size: 26px; font-weight: 800">Pronto a provarlo sulle tue pratiche?</h2><p style="margin: 0; color: #4f4a66; font-size: 16px">Crealo ora oppure parla con noi per un progetto su misura.</p></div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap">
+          <button type="button" onClick="{{ createCredit }}" style="height: 50px; padding: 0 24px; border-radius: 12px; border: none; background: #f2c14e; color: #1a1238; font-size: 16px; font-weight: 800">{{ creditCta }}</button>
+          <button type="button" onClick="{{ goCons }}" style="height: 50px; padding: 0 22px; border-radius: 12px; border: 1px solid #dcd9e8; background: #ffffff; color: #1f1838; font-size: 16px; font-weight: 700">Parla con un consulente</button>
+        </div>
+      </section>
+    </div>
+    </sc-if>
+
+    <!-- ============ LIA ============ -->
+    <sc-if value="{{ isLia }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; gap: 36px">
+      <section style="display: flex; flex-direction: column; gap: 12px; max-width: 760px">
+        <span style="display: flex; gap: 8px; flex-wrap: wrap"><span style="font-size: 13px; letter-spacing: 1.5px; font-weight: 800; color: #3b2a78; background: #ebe4fc; padding: 6px 12px; border-radius: 99px">LIA</span><span style="font-size: 13px; letter-spacing: 1.5px; font-weight: 800; color: #1f6b3e; background: #ddf3e5; padding: 6px 12px; border-radius: 99px">OPEN SOURCE · [LICENZA]</span></span>
+        <h1 style="margin: 0; font-size: 44px; line-height: 1.1; font-weight: 800; letter-spacing: -0.5px">Il linguaggio aperto per creare agenti da soli.</h1>
+        <p style="margin: 0; color: #4f4a66; font-size: 18px; line-height: 1.55">Descrivi il tuo agente in poche righe di italiano strutturato: cosa deve fare, quali fonti usa, che regole segue. LIA lo trasforma in un agente pronto, collegato al tuo progetto.</p>
+      </section>
+
+      <section style="display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+          <span style="font-size: 15px; font-weight: 700; color: #5d5873">Parti da un esempio:</span>
+          <sc-for list="{{ tplChips }}" as="t" hint-placeholder-count="3">
+            <button type="button" onClick="{{ t.pick }}" aria-pressed="{{ t.pressed }}" style="height: 40px; padding: 0 16px; border-radius: 99px; font-size: 15px; font-weight: 700; {{ t.style }}">{{ t.label }}</button>
+          </sc-for>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch">
+          <!-- editor -->
+          <div style="flex: 3 1 440px; min-width: 0; background: #0f0b22; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #1a1238">
+              <span style="display: flex; gap: 6px"><span style="width: 11px; height: 11px; border-radius: 50%; background: #ff6b6b"></span><span style="width: 11px; height: 11px; border-radius: 50%; background: #f2c14e"></span><span style="width: 11px; height: 11px; border-radius: 50%; background: #8fe3b0"></span></span>
+              <span style="color: #c9c2e8; font-size: 13px; font-weight: 700; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace">{{ liaFile }}</span>
+              <span style="color: #c9c2e8; font-size: 12px; font-weight: 700">Modificabile</span>
+            </div>
+            <div style="position: relative; flex-grow: 1">
+              <div aria-hidden="true" style="padding: 20px 22px; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 15px; line-height: 1.7; color: #e9e6f5; white-space: pre-wrap; word-break: break-word">
+                <sc-for list="{{ liaLines }}" as="ln" hint-placeholder-count="12">
+                  <div style="min-height: 1.7em"><sc-for list="{{ ln.toks }}" as="tk" hint-placeholder-count="4"><span style="white-space: pre-wrap; {{ tk.style }}">{{ tk.t }}</span></sc-for></div>
+                </sc-for>
+              </div>
+              <label style="position: absolute; left: -9999px" for="lia-editor">Script LIA</label>
+              <textarea id="lia-editor" spellcheck="false" value="{{ liaScript }}" onChange="{{ setScript }}" style="position: absolute; inset: 0; width: 100%; height: 100%; box-sizing: border-box; margin: 0; padding: 20px 22px; border: none; outline: none; resize: none; overflow: hidden; background: transparent; color: transparent; caret-color: #ffffff; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 15px; line-height: 1.7; white-space: pre-wrap; word-break: break-word"></textarea>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-top: 1px solid rgba(255,255,255,0.08)">
+              <span style="color: #b3acd6; font-size: 13px">Scrivi direttamente qui: l’anteprima si aggiorna mentre digiti.</span>
+              <button type="button" onClick="{{ runLia }}" style="height: 44px; padding: 0 20px; border-radius: 10px; border: none; background: #a48cf0; color: #120d2a; font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4v16l13-8z"></path></svg>{{ runLabel }}</button>
+            </div>
+          </div>
+
+          <!-- preview -->
+          <div style="flex: 2 1 320px; min-width: 0; background: #ffffff; border: 1px solid #e4e2ee; border-radius: 20px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+            <div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 13px; letter-spacing: 1.5px; font-weight: 800; color: #5d5873">ANTEPRIMA AGENTE</span><span style="font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 99px; {{ runBadgeStyle }}">{{ runBadge }}</span></div>
+            <div style="display: flex; align-items: center; gap: 14px">
+              <span style="width: 76px; height: 76px; border-radius: 50%; background: #ebe4fc; box-shadow: inset 0 0 0 4px #ffffff; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="64" height="64" viewBox="0 0 140 140" style="animation: bob 2.8s ease-in-out infinite"><path d="M94 6 h28 a10 10 0 0 1 10 10 v8 a10 10 0 0 1 -10 10 h-16 l-8 7 v-7 h-4 a10 10 0 0 1 -10 -10 v-8 a10 10 0 0 1 10 -10 z" fill="#ffffff" stroke="#3b2a78" stroke-width="2"></path><circle cx="98" cy="20" r="2.6" fill="#7b5fd6"></circle><circle cx="107" cy="20" r="2.6" fill="#7b5fd6"></circle><circle cx="116" cy="20" r="2.6" fill="#7b5fd6"></circle><rect x="20" y="56" width="10" height="20" rx="5" fill="#3b2a78"></rect><rect x="110" y="56" width="10" height="20" rx="5" fill="#3b2a78"></rect><rect x="28" y="30" width="84" height="66" rx="33" fill="#7b5fd6"></rect><rect x="40" y="44" width="60" height="38" rx="19" fill="#1a1238"></rect><path d="M50 64 q6 -8 12 0" stroke="#d8ccff" stroke-width="3.5" fill="none" stroke-linecap="round"></path><path d="M78 64 q6 -8 12 0" stroke="#d8ccff" stroke-width="3.5" fill="none" stroke-linecap="round"></path><path d="M63 72 q7 6 14 0" stroke="#d8ccff" stroke-width="3" fill="none" stroke-linecap="round"></path><circle cx="46" cy="74" r="3.5" fill="#ff9ac2" opacity="0.8"></circle><circle cx="94" cy="74" r="3.5" fill="#ff9ac2" opacity="0.8"></circle><rect x="44" y="98" width="52" height="32" rx="14" fill="#7b5fd6"></rect><circle cx="70" cy="114" r="7" fill="#ffffff"></circle><circle cx="70" cy="114" r="3" fill="#7b5fd6"></circle></svg></span>
+              <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-size: 22px; font-weight: 800">{{ lia.name }}</span><span style="font-size: 15px; color: #4f4a66">{{ lia.ruolo }}</span></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 13px; font-weight: 800; color: #5d5873">FONTI</span>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{ lia.fonti }}" as="f" hint-placeholder-count="3"><span style="background: #f3f0fc; color: #3b2a78; font-size: 14px; font-weight: 700; padding: 5px 10px; border-radius: 8px">{{ f }}</span></sc-for></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 13px; font-weight: 800; color: #5d5873">{{ lia.trigger }}</span>
+              <ol style="margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 4px; font-size: 15px"><sc-for list="{{ lia.steps }}" as="st" hint-placeholder-count="4"><li>{{ st }}</li></sc-for></ol>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 13px; font-weight: 800; color: #5d5873">REGOLE</span>
+              <sc-for list="{{ lia.regole }}" as="r" hint-placeholder-count="2"><span style="display: flex; gap: 8px; font-size: 15px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b2a78" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 3px"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"></path></svg>{{ r }}</span></sc-for>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 13px; font-weight: 800; color: #5d5873">DISPONIBILE SU</span>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{ lia.canali }}" as="c" hint-placeholder-count="2"><span style="border: 1px solid #dcd9e8; font-size: 14px; font-weight: 700; padding: 4px 10px; border-radius: 8px">{{ c }}</span></sc-for></div>
+            </div>
+            <div style="flex-grow: 1"></div>
+            <sc-if value="{{ runDone }}" hint-placeholder-val="{{ false }}">
+              <button type="button" onClick="{{ addLiaAgent }}" style="height: 48px; border-radius: 10px; border: none; background: #3b2a78; color: #ffffff; font-size: 16px; font-weight: 800">Aggiungi ai miei agenti</button>
+            </sc-if>
+          </div>
+        </div>
+      </section>
+
+      <section style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 13px; letter-spacing: 1.5px; font-weight: 800; color: #1f6b3e">OPEN SOURCE</span>
+          <h2 style="margin: 0; font-size: 28px; font-weight: 800">Il linguaggio è di tutti. La piattaforma lo porta in produzione.</h2>
+          <p style="margin: 0; color: #4f4a66; font-size: 16px; line-height: 1.55; max-width: 720px">Chiunque può scrivere, leggere e migliorare agenti in LIA. Quando devono girare sui dati veri dell’azienda, in sicurezza e a norma, entra in gioco Luxia.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 16px">
+          <div style="flex: 1 1 320px; background: #ffffff; border: 1px solid #e4e2ee; border-radius: 20px; padding: 26px; display: flex; flex-direction: column; gap: 12px">
+            <span style="align-self: flex-start; font-size: 12px; font-weight: 800; letter-spacing: 1px; color: #1f6b3e; background: #ddf3e5; padding: 4px 10px; border-radius: 99px">GRATIS · OPEN SOURCE</span>
+            <h3 style="margin: 0; font-size: 20px; font-weight: 800">LIA</h3>
+            <span style="font-size: 15px; line-height: 1.7; color: #2a2148">✓ Specifica del linguaggio<br>✓ Editor e controllo della sintassi<br>✓ Esecuzione locale per provare gli agenti<br>✓ Libreria pubblica di esempi<br>✓ Community e contributi su GitHub</span>
+            <div style="flex-grow: 1"></div>
+            <a href="#" style="align-self: flex-start; height: 44px; padding: 0 18px; border-radius: 10px; border: 1px solid #dcd9e8; color: #1f1838; font-size: 15px; font-weight: 800; display: flex; align-items: center; text-decoration: none">Vai al repository GitHub ↗</a>
+          </div>
+          <div style="flex: 1 1 320px; background: #1a1238; color: #ffffff; border-radius: 20px; padding: 26px; display: flex; flex-direction: column; gap: 12px">
+            <span style="align-self: flex-start; font-size: 12px; font-weight: 800; letter-spacing: 1px; color: #1a1238; background: #f2c14e; padding: 4px 10px; border-radius: 99px">PIATTAFORMA LUXIA</span>
+            <h3 style="margin: 0; font-size: 20px; font-weight: 800">LIA in produzione</h3>
+            <span style="font-size: 15px; line-height: 1.7; color: #e9e6f5">✓ Modelli proprietari Luxia<br>✓ Connettori certificati a gestionali e archivi<br>✓ Governance, ruoli, audit e tracciabilità AI Act<br>✓ SaaS, on-premise o Luxia Pod<br>✓ Agenti premium come il Credit Agent<br>✓ Supporto e consulenza dedicati</span>
+            <div style="flex-grow: 1"></div>
+            <button type="button" onClick="{{ goCons }}" style="align-self: flex-start; height: 44px; padding: 0 18px; border-radius: 10px; border: none; background: #ffffff; color: #1a1238; font-size: 15px; font-weight: 800">Parla con noi</button>
+          </div>
+        </div>
+      </section>
+
+      <section style="display: flex; flex-direction: column; gap: 18px">
+        <h2 style="margin: 0; font-size: 28px; font-weight: 800">Quattro parole e hai un agente</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
+          <sc-for list="{{ liaConcepts }}" as="c" hint-placeholder-count="4">
+            <div style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 8px">
+              <span style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 16px; font-weight: 700; color: #3b2a78; background: #f3f0fc; align-self: flex-start; padding: 4px 10px; border-radius: 8px">{{ c.kw }}</span>
+              <h3 style="margin: 0; font-size: 18px; font-weight: 800">{{ c.title }}</h3>
+              <p style="margin: 0; color: #4f4a66; font-size: 15px; line-height: 1.5">{{ c.text }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section style="background: #1a1238; color: #ffffff; border-radius: 22px; padding: 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 6px; flex: 1 1 360px"><h2 style="margin: 0; font-size: 26px; font-weight: 800">Preferisci che lo scriviamo insieme?</h2><p style="margin: 0; color: #d9d4f0; font-size: 16px">I nostri consulenti ti affiancano, oppure formano il tuo team su LIA.</p></div>
+        <button type="button" onClick="{{ goCons }}" style="height: 50px; padding: 0 24px; border-radius: 12px; border: none; background: #ffffff; color: #1a1238; font-size: 16px; font-weight: 800">Parla con noi</button>
+      </section>
+    </div>
+    </sc-if>
+
+    <!-- ============ PIANI E CREDITI ============ -->
+    <sc-if value="{{ isPlans }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; gap: 36px">
+      <section style="display: flex; flex-direction: column; gap: 8px">
+        <span style="align-self: flex-start; font-size: 13px; letter-spacing: 1.5px; font-weight: 800; color: #3b2a78; background: #ebe4fc; padding: 6px 12px; border-radius: 99px">PIANO E CONSUMI</span>
+        <h1 style="margin: 0; font-size: 40px; font-weight: 800; letter-spacing: -0.5px">Piano e consumi</h1>
+        <p style="margin: 0; color: #4f4a66; font-size: 17px">Il tuo contratto, i consumi del mese e i limiti di spesa della tua organizzazione.</p>
+      </section>
+
+      <!-- usage -->
+      <section style="display: flex; flex-wrap: wrap; gap: 20px">
+        <div style="flex: 2 1 460px; background: #ffffff; border: 1px solid #e4e2ee; border-radius: 22px; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #5d5873">CREDITI USATI A OTTOBRE</span><span style="font-size: 34px; font-weight: 800">{{ usedLabel }} <span style="font-size: 18px; color: #5d5873; font-weight: 700">/ {{ capLabel }}</span></span></div>
+            <span style="font-size: 13px; font-weight: 800; color: #1f6b3e; background: #ddf3e5; padding: 6px 12px; border-radius: 99px">Piano Business · si rinnova il 1° novembre</span>
+          </div>
+          <div style="height: 14px; border-radius: 7px; background: #f3f2f8; overflow: hidden; display: flex">
+            <sc-for list="{{ usage }}" as="u" hint-placeholder-count="4"><span style="height: 14px; width: {{ u.pct }}%; background: {{ u.color }}"></span></sc-for>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px 20px">
+            <sc-for list="{{ usage }}" as="u" hint-placeholder-count="4">
+              <span style="display: flex; align-items: center; gap: 8px; font-size: 15px"><span style="width: 10px; height: 10px; border-radius: 3px; background: {{ u.color }}; flex-shrink: 0"></span><span style="flex: 1">{{ u.name }}</span><span style="font-weight: 800">{{ u.label }}</span></span>
+            </sc-for>
+          </div>
+          <p style="margin: 0; color: #4f4a66; font-size: 14px">Una risposta vale 1 credito; un documento analizzato o un’azione dell’agente valgono 5.</p>
+        </div>
+        <div style="flex: 1 1 280px; background: #1a1238; color: #ffffff; border-radius: 22px; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px">
+          <span style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #c4b2ff">SERVONO PIÙ CREDITI?</span>
+          <span style="font-size: 26px; font-weight: 800; line-height: 1.2">+25.000 crediti</span>
+          <span style="font-size: 32px; font-weight: 800; color: #f2c14e">€ 200</span>
+          <span style="color: #d9d4f0; font-size: 15px; line-height: 1.5">Validi per il mese in corso, si attivano subito.</span>
+          <div style="flex-grow: 1"></div>
+          <button type="button" onClick="{{ buyPack }}" style="height: 48px; border-radius: 12px; border: none; background: #f2c14e; color: #1a1238; font-size: 16px; font-weight: 800">{{ packLabel }}</button>
+        </div>
+      </section>
+
+      <!-- consumables -->
+      <section style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 style="margin: 0; font-size: 28px; font-weight: 800">I tuoi consumabili</h2>
+          <p style="margin: 0; color: #4f4a66; font-size: 16px">Tutto ciò che si paga in base all’uso. I crediti misurano gli agenti generici; pratiche, minuti e conversazioni si pagano a risultato.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px">
+          <sc-for list="{{ consumables }}" as="cs" hint-placeholder-count="4">
+            <div style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 10px">
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+                <span style="display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 800"><span style="width: 10px; height: 10px; border-radius: 3px; background: {{ cs.color }}"></span>{{ cs.name }}</span>
+                <span style="font-size: 11px; font-weight: 800; letter-spacing: 0.5px; padding: 3px 8px; border-radius: 99px; {{ cs.statusStyle }}">{{ cs.status }}</span>
+              </div>
+              <span style="font-size: 13px; color: #5d5873">{{ cs.agent }}</span>
+              <span style="font-size: 26px; font-weight: 800">{{ cs.usedLabel }} <span style="font-size: 15px; color: #5d5873; font-weight: 700">/ {{ cs.includedLabel }}</span></span>
+              <div style="height: 8px; border-radius: 4px; background: #f3f2f8; overflow: hidden"><div style="height: 8px; border-radius: 4px; width: {{ cs.pct }}%; background: {{ cs.color }}"></div></div>
+              <span style="display: flex; justify-content: space-between; gap: 8px; font-size: 14px; color: #4f4a66"><span>Extra</span><span style="font-weight: 800; color: #1f1838">{{ cs.price }}</span></span>
+              <sc-if value="{{ cs.canActivate }}" hint-placeholder-val="{{ false }}">
+                <button type="button" onClick="{{ cs.activate }}" style="margin-top: 4px; height: 40px; border-radius: 10px; border: 1.5px solid #3b2a78; background: #ffffff; color: #3b2a78; font-size: 14px; font-weight: 800">{{ cs.cta }}</button>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <!-- contract -->
+      <section style="display: flex; flex-wrap: wrap; gap: 20px">
+        <div style="flex: 2 1 460px; background: #ffffff; border: 1px solid #e4e2ee; border-radius: 22px; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+          <h2 style="margin: 0; font-size: 26px; font-weight: 800">Il tuo contratto</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px">
+            <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #5d5873; font-weight: 700">Piano</span><span style="font-size: 18px; font-weight: 800">Business</span></span>
+            <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #5d5873; font-weight: 700">Utenti</span><span style="font-size: 18px; font-weight: 800">38 di 50</span></span>
+            <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #5d5873; font-weight: 700">Crediti inclusi al mese</span><span style="font-size: 18px; font-weight: 800">100.000</span></span>
+            <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #5d5873; font-weight: 700">Agenti premium</span><span style="font-size: 18px; font-weight: 800">{{ premiumLabel }}</span></span>
+            <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #5d5873; font-weight: 700">Rinnovo</span><span style="font-size: 18px; font-weight: 800">[data rinnovo]</span></span>
+            <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 13px; color: #5d5873; font-weight: 700">Referente Luxia</span><span style="font-size: 18px; font-weight: 800">[nome referente]</span></span>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px">
+            <button type="button" onClick="{{ askUpgrade }}" style="height: 46px; padding: 0 20px; border-radius: 12px; border: none; background: #3b2a78; color: #ffffff; font-size: 15px; font-weight: 800">Richiedi una modifica al contratto</button>
+            <button type="button" onClick="{{ askPod }}" style="height: 46px; padding: 0 20px; border-radius: 12px; border: 1px solid #dcd9e8; background: #ffffff; color: #1f1838; font-size: 15px; font-weight: 700">Valuta Luxia Pod o on-premise</button>
+          </div>
+        </div>
+        <div style="flex: 1 1 300px; background: #ffffff; border: 1px solid #e4e2ee; border-radius: 22px; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+          <h2 style="margin: 0; font-size: 22px; font-weight: 800">Avvisi e limiti di spesa</h2>
+          <sc-for list="{{ alerts }}" as="al" hint-placeholder-count="3">
+            <button type="button" role="switch" aria-checked="{{ al.checked }}" onClick="{{ al.toggle }}" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border: none; border-bottom: 1px solid #f0eef6; background: transparent; text-align: left; color: #1f1838">
+              <span style="display: flex; flex-direction: column"><span style="font-size: 15px; font-weight: 700">{{ al.label }}</span><span style="font-size: 13px; color: #5d5873">{{ al.hint }}</span></span>
+              <span style="flex-shrink: 0; width: 44px; height: 26px; border-radius: 13px; padding: 3px; box-sizing: border-box; display: flex; {{ al.trackStyle }}"><span style="width: 20px; height: 20px; border-radius: 50%; background: #ffffff"></span></span>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+
+    </div>
+    </sc-if>
+
+    <!-- ============ CONSULENZA ============ -->
+    <sc-if value="{{ isCons }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; gap: 44px">
+      <section style="position: relative; overflow: hidden; background: #ffffff; border: 1px solid #e4e2ee; border-radius: 24px; padding: 44px; display: flex; flex-direction: column; gap: 16px">
+        <svg aria-hidden="true" width="420" height="420" viewBox="0 0 420 420" fill="none" style="position: absolute; right: -120px; top: -120px"><circle cx="210" cy="210" r="200" stroke="#ebe4fc" stroke-width="2"></circle><circle cx="210" cy="210" r="140" stroke="#ebe4fc" stroke-width="2"></circle><circle cx="210" cy="210" r="80" stroke="#ebe4fc" stroke-width="2"></circle></svg>
+        <span style="align-self: flex-start; font-size: 13px; letter-spacing: 1.5px; font-weight: 800; color: #3b2a78; background: #ebe4fc; padding: 6px 12px; border-radius: 99px; position: relative">PROGETTI SU MISURA</span>
+        <h1 style="margin: 0; font-size: 44px; line-height: 1.1; font-weight: 800; letter-spacing: -0.5px; max-width: 760px; position: relative">Costruiamo insieme quello che i tuoi agenti non fanno ancora.</h1>
+        <p style="margin: 0; color: #4f4a66; font-size: 18px; line-height: 1.55; max-width: 640px; position: relative">Hai un processo da automatizzare, un sistema da collegare o un’idea che non trovi nel catalogo? Lavoriamo con te dall’idea alla messa in produzione.</p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; position: relative">
+          <a href="#contatto" style="height: 50px; padding: 0 24px; border-radius: 12px; background: #3b2a78; color: #ffffff; font-size: 16px; font-weight: 800; display: flex; align-items: center; text-decoration: none">Raccontaci il tuo progetto</a>
+          
+        </div>
+      </section>
+
+      <section style="display: flex; flex-direction: column; gap: 18px">
+        <h2 style="margin: 0; font-size: 28px; font-weight: 800">Cosa possiamo fare insieme</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px">
+          <sc-for list="{{ services }}" as="sv" hint-placeholder-count="4">
+            <button type="button" onClick="{{ sv.pick }}" style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 10px; text-align: left; color: #1f1838">
+              <span style="width: 44px; height: 44px; border-radius: 12px; background: {{ sv.bg }}; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: {{ sv.fg }}">{{ sv.num }}</span>
+              <span style="font-size: 19px; font-weight: 800">{{ sv.title }}</span>
+              <span style="color: #4f4a66; font-size: 15px; line-height: 1.5">{{ sv.text }}</span>
+              <span style="color: #3b2a78; font-weight: 800; font-size: 14px; margin-top: 4px">Ne parliamo →</span>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+
+      <section style="display: flex; flex-direction: column; gap: 18px">
+        <h2 style="margin: 0; font-size: 28px; font-weight: 800">Come lavoriamo</h2>
+        <ol style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+          <sc-for list="{{ processSteps }}" as="ps" hint-placeholder-count="4">
+            <li style="position: relative; background: #ffffff; border: 1px solid #e4e2ee; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 32px; font-weight: 800; color: #a48cf0; line-height: 1">{{ ps.n }}</span>
+              <span style="font-size: 18px; font-weight: 800">{{ ps.title }}</span>
+              <span style="color: #4f4a66; font-size: 15px; line-height: 1.5">{{ ps.text }}</span>
+            </li>
+          </sc-for>
+        </ol>
+      </section>
+
+      <section id="contatto" style="display: flex; flex-wrap: wrap; gap: 20px; scroll-margin-top: 24px">
+        <div style="flex: 3 1 460px; background: #ffffff; border: 1px solid #e4e2ee; border-radius: 22px; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+          <sc-if value="{{ formOpen }}" hint-placeholder-val="{{ true }}">
+            <h2 style="margin: 0; font-size: 26px; font-weight: 800">Raccontaci cosa ti serve</h2>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 14px; font-weight: 700">Di cosa hai bisogno? <span style="color: #5d5873; font-weight: 600">(anche più di una)</span></span>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                <sc-for list="{{ needChips }}" as="n" hint-placeholder-count="5">
+                  <button type="button" onClick="{{ n.toggle }}" aria-pressed="{{ n.pressed }}" style="height: 40px; padding: 0 14px; border-radius: 99px; font-size: 14px; font-weight: 700; {{ n.style }}">{{ n.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+              <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700">Nome e cognome<input type="text" autocomplete="name" style="height: 46px; border-radius: 10px; border: 1px solid #cfcbe0; padding: 0 14px; font-family: inherit; font-size: 15px"></label>
+              <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700">Azienda<input type="text" autocomplete="organization" style="height: 46px; border-radius: 10px; border: 1px solid #cfcbe0; padding: 0 14px; font-family: inherit; font-size: 15px"></label>
+              <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700">Email di lavoro<input type="email" autocomplete="email" style="height: 46px; border-radius: 10px; border: 1px solid #cfcbe0; padding: 0 14px; font-family: inherit; font-size: 15px"></label>
+              <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700">Telefono <span style="color: #5d5873; font-weight: 600">(facoltativo)</span><input type="tel" autocomplete="tel" style="height: 46px; border-radius: 10px; border: 1px solid #cfcbe0; padding: 0 14px; font-family: inherit; font-size: 15px"></label>
+            </div>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700">Descrivi l’idea o il processo<textarea rows="4" value="{{ consMsg }}" onChange="{{ setConsMsg }}" placeholder="Es. vorremmo un agente che prepari le offerte commerciali partendo dal CRM…" style="border-radius: 10px; border: 1px solid #cfcbe0; padding: 12px 14px; font-family: inherit; font-size: 15px; resize: vertical"></textarea></label>
+            <button type="button" onClick="{{ sendForm }}" style="align-self: flex-start; height: 50px; padding: 0 26px; border-radius: 12px; border: none; background: #3b2a78; color: #ffffff; font-size: 16px; font-weight: 800">Invia richiesta</button>
+          </sc-if>
+          <sc-if value="{{ formSent }}" hint-placeholder-val="{{ false }}">
+            <span style="width: 56px; height: 56px; border-radius: 50%; background: #ddf3e5; color: #1f6b3e; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></span>
+            <h2 style="margin: 0; font-size: 26px; font-weight: 800">Grazie, abbiamo ricevuto la tua richiesta.</h2>
+            <p style="margin: 0; color: #4f4a66; font-size: 16px; line-height: 1.55">Ti ricontattiamo per fissare una prima call conoscitiva.</p>
+            <button type="button" onClick="{{ resetForm }}" style="align-self: flex-start; height: 46px; padding: 0 20px; border-radius: 10px; border: 1px solid #dcd9e8; background: #ffffff; color: #1f1838; font-size: 15px; font-weight: 700">Invia un’altra richiesta</button>
+          </sc-if>
+        </div>
+        <div style="flex: 2 1 280px; display: flex; flex-direction: column; gap: 16px">
+          <div style="background: #ebe4fc; border-radius: 22px; padding: 28px; display: flex; flex-direction: column; gap: 12px">
+            <h3 style="margin: 0; font-size: 20px; font-weight: 800">Cosa succede dopo</h3>
+            <span style="font-size: 15px; line-height: 1.5; color: #2a2148">Ti chiamiamo per capire il contesto, poi ti proponiamo un percorso: da un workshop di mezza giornata a un progetto completo.</span>
+          </div>
+          <div style="background: #ffffff; border: 1px solid #e4e2ee; border-radius: 22px; padding: 28px; display: flex; flex-direction: column; gap: 10px">
+            <h3 style="margin: 0; font-size: 20px; font-weight: 800">Preferisci scriverci?</h3>
+            <a href="mailto:info@hiluxia.com" style="font-size: 16px; font-weight: 700">info@hiluxia.com</a>
+            <a href="https://www.hiluxia.com/prova-luxia" target="_blank" rel="noopener" style="font-size: 15px; font-weight: 700">Prenota una demo di 30 minuti ↗</a>
+          </div>
+        </div>
+      </section>
+
+      
+    </div>
+    </sc-if>
+
+    </div>
+  </main>
+
+  <!-- ============ MODAL ============ -->
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; background: rgba(18,13,42,0.55); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50">
+      <div role="dialog" aria-modal="true" aria-label="{{ modalTitle }}" style="width: 100%; max-width: {{ modalWidth }}; background: #ffffff; border-radius: 20px; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; font-family: 'Nunito Sans', 'Avenir Next', Avenir, system-ui, sans-serif; color: #1f1838">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
+          <h2 style="margin: 0; font-size: 26px; font-weight: 800">{{ modalTitle }}</h2>
+          <button type="button" onClick="{{ closeModal }}" aria-label="Chiudi" style="width: 44px; height: 44px; border-radius: 10px; border: 1px solid #e4e2ee; background: #ffffff; color: #1f1838; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+        </div>
+        <sc-if value="{{ isDemo }}" hint-placeholder-val="{{ false }}">
+          <div style="position: relative; aspect-ratio: 16 / 9; background: #0f0b22; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: 18px 20px; box-sizing: border-box">
+            <div style="position: absolute; top: 0; bottom: 0; left: 0; width: 30%; background: rgba(255,255,255,0.05); animation: vidscan 2.4s linear infinite"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; position: relative">
+              <span style="display: flex; align-items: center; gap: 6px; color: #ffffff; font-size: 12px; font-weight: 700; background: rgba(255,255,255,0.12); padding: 4px 10px; border-radius: 99px"><span style="width: 7px; height: 7px; border-radius: 50%; background: #ff6b6b"></span>DEMO IN RIPRODUZIONE</span>
+              <span style="color: #c9c2e8; font-size: 13px; font-weight: 600">{{ demoDuration }}</span>
+            </div>
+            <div style="display: flex; align-items: flex-end; justify-content: center; gap: 8px; height: 90px; position: relative">
+              <sc-for list="{{ demoBars }}" as="b" hint-placeholder-count="11">
+                <span style="width: 14px; height: 90px; border-radius: 5px; transform-origin: bottom; background: {{ demoColor }}; animation: vidbar 1.2s ease-in-out infinite; animation-delay: {{ b.delay }}"></span>
+              </sc-for>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px; position: relative">
+              <span style="color: #ffffff; font-size: 15px; font-weight: 600">{{ demoCaption }}</span>
+              <div style="height: 4px; border-radius: 2px; background: rgba(255,255,255,0.2)"><div style="height: 4px; border-radius: 2px; background: #ffffff; animation: vidprog 8s linear infinite"></div></div>
+            </div>
+          </div>
+          <sc-if value="{{ isHumanDemo }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+              <div style="flex: 1 1 260px; background: #ece5dd; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column">
+                <div style="background: #0f6e63; color: #ffffff; padding: 10px 14px; display: flex; align-items: center; gap: 10px">
+                  <span style="width: 32px; height: 32px; border-radius: 50%; background: #d9f1f0; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: #145754">L</span>
+                  <span style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 800">Comune · Assistente</span><span style="font-size: 12px">su WhatsApp · online</span></span>
+                </div>
+                <div style="padding: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 13.5px; line-height: 1.4; color: #1f1838">
+                  <span style="align-self: flex-end; max-width: 80%; background: #dcf8c6; padding: 8px 10px; border-radius: 10px 10px 2px 10px">Buongiorno, a che ora apre l’ufficio anagrafe?</span>
+                  <span style="align-self: flex-start; max-width: 85%; background: #ffffff; padding: 8px 10px; border-radius: 10px 10px 10px 2px">Buongiorno! Dal lunedì al venerdì, dalle 9 alle 12. Vuole che le prenoti un appuntamento?</span>
+                  <span style="align-self: flex-end; max-width: 80%; background: #dcf8c6; padding: 8px 10px; border-radius: 10px 10px 2px 10px">Sì, giovedì mattina</span>
+                  <span style="align-self: flex-start; max-width: 85%; background: #ffffff; padding: 8px 10px; border-radius: 10px 10px 10px 2px">Fatto: giovedì alle 10:30. Le ho inviato qui la conferma con i documenti da portare.</span>
+                </div>
+              </div>
+              <div style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 8px; justify-content: center">
+                <span style="align-self: flex-start; font-size: 11px; font-weight: 800; letter-spacing: 1px; color: #0b3d2c; background: #c9f2dc; padding: 4px 10px; border-radius: 99px">ESEMPIO · CANALE WHATSAPP</span>
+                <span style="font-size: 18px; font-weight: 800">Cosa vede il cittadino o il cliente</span>
+                <span style="font-size: 14.5px; color: #4f4a66; line-height: 1.5">L’avatar risponde sui canali che attivi per lui: web, totem, telefono e WhatsApp. WhatsApp si configura nei canali dell’agente e richiede un account WhatsApp Business verificato.</span>
+              </div>
+            </div>
+          </sc-if>
+          <p style="margin: 0; color: #4f4a66; font-size: 16px; line-height: 1.5">{{ demoDesc }}</p>
+          <sc-if value="{{ demoActive }}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #5d5873">{{ instancesLabel }}</span>
+              <sc-for list="{{ instances }}" as="ins" hint-placeholder-count="2">
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 14px; border: 1px solid #e4e2ee; border-radius: 12px">
+                  <span style="width: 10px; height: 10px; border-radius: 50%; background: #2e9e5b; flex-shrink: 0"></span>
+                  <span style="flex: 1; font-size: 15px; font-weight: 700; min-width: 140px">{{ ins.name }}</span>
+                  <sc-for list="{{ ins.channels }}" as="ch" hint-placeholder-count="2"><span style="font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px; {{ ch.style }}">{{ ch.label }}</span></sc-for>
+                  <button type="button" onClick="{{ closeModal }}" style="height: 34px; padding: 0 12px; border-radius: 8px; border: 1px solid #dcd9e8; background: #ffffff; color: #3b2a78; font-size: 13px; font-weight: 800">Apri</button>
+                </div>
+              </sc-for>
+            </div>
+            <button type="button" onClick="{{ createFromDemo }}" style="height: 48px; border-radius: 10px; border: 1.5px solid #3b2a78; background: #ffffff; color: #3b2a78; font-size: 16px; font-weight: 800">+ Crea un altro {{ targetName }}</button>
+          </sc-if>
+          <sc-if value="{{ demoInactive }}" hint-placeholder-val="{{ false }}">
+            <button type="button" onClick="{{ createFromDemo }}" style="height: 48px; border-radius: 10px; border: none; background: #3b2a78; color: #ffffff; font-size: 16px; font-weight: 800">Crea questo agente</button>
+          </sc-if>
+        </sc-if>
+        <sc-if value="{{ isCreate }}" hint-placeholder-val="{{ false }}">
+          <p style="margin: 0; color: #4f4a66; font-size: 15px; line-height: 1.5">Tre passi e il tuo agente è pronto. Potrai modificarlo in qualsiasi momento.</p>
+          <ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 15px">
+            <li>Dagli un nome e uno scopo</li>
+            <li>Collega le fonti dati del progetto</li>
+            <li>Scegli chi può usarlo e pubblicalo</li>
+          </ol>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700">Nome dell’agente
+            <input type="text" value="{{ draftName }}" onChange="{{ setName }}" style="height: 46px; border-radius: 10px; border: 1px solid #cfcbe0; padding: 0 14px; font-family: inherit; font-size: 15px; color: #1f1838">
+          </label>
+          <sc-if value="{{ isHumanCreate }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <span style="font-size: 14px; font-weight: 700">Dove deve rispondere?</span>
+              <div role="group" aria-label="Canali" style="display: flex; flex-wrap: wrap; gap: 8px">
+                <sc-for list="{{ channelChips }}" as="cc" hint-placeholder-count="4">
+                  <button type="button" onClick="{{ cc.toggle }}" aria-pressed="{{ cc.pressed }}" style="height: 38px; padding: 0 14px; border-radius: 99px; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px; {{ cc.style }}">{{ cc.label }}<sc-if value="{{ cc.isNew }}" hint-placeholder-val="{{ false }}"><span style="font-size: 10px; font-weight: 800; letter-spacing: 0.5px; background: #c9f2dc; color: #0b3d2c; padding: 2px 6px; border-radius: 99px">NUOVO</span></sc-if></button>
+                </sc-for>
+              </div>
+              <sc-if value="{{ waSelected }}" hint-placeholder-val="{{ false }}">
+                <div style="background: #f3f2f8; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; font-size: 13.5px; line-height: 1.45">
+                  <span style="font-weight: 800">Per attivare WhatsApp servono:</span>
+                  <span>• account WhatsApp Business verificato da Meta</span>
+                  <span>• un numero di telefono dedicato</span>
+                  <span>• modelli di messaggio approvati</span>
+                  <span>• aggiornamento del registro dei trattamenti (GDPR)</span>
+                  <span style="color: #4f4a66">L’agente resta in bozza su WhatsApp finché la verifica non è completa.</span>
+                </div>
+              </sc-if>
+              <span style="font-size: 13px; color: #5d5873">Voce e conversazioni WhatsApp sono consumabili: li trovi in Piano e consumi.</span>
+            </div>
+          </sc-if>
+          <button type="button" onClick="{{ confirmCreate }}" style="height: 48px; border-radius: 10px; border: none; background: #3b2a78; color: #ffffff; font-size: 16px; font-weight: 800">Crea agente</button>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3900}}'>
+var TPLS = {
+  credit: 'agente "Credit Agent" {\n  ruolo: "analista del credito"\n  fonti: bilanci, centrale_rischi, documenti_cliente\n\n  quando nuova_pratica {\n    leggi le fonti\n    calcola gli indicatori\n    proponi un rating\n    scrivi la proposta di affidamento\n  }\n\n  regole {\n    cita sempre la fonte\n    chiedi conferma se il rating è sotto "B"\n  }\n\n  pubblica su: chat, teams\n}',
+  hr: 'agente "Assistente HR" {\n  ruolo: "risponde ai dipendenti su ferie e policy"\n  fonti: regolamento_interno, contratto_nazionale\n\n  quando domanda {\n    cerca nelle fonti\n    rispondi in modo semplice\n  }\n\n  regole {\n    cita sempre la fonte\n    passa a una persona se la domanda è personale\n  }\n\n  pubblica su: chat, teams\n}',
+  sales: 'agente "Report Vendite" {\n  ruolo: "prepara il report settimanale"\n  fonti: crm, database_ordini\n\n  ogni lunedì alle 8:00 {\n    calcola il fatturato per regione\n    confronta con la settimana precedente\n    scrivi il report\n    invia a direzione_commerciale\n  }\n\n  regole {\n    usa grafici semplici\n  }\n\n  pubblica su: email\n}'
+};
+var KW = ['agente', 'ruolo', 'fonti', 'quando', 'ogni', 'regole', 'pubblica', 'su'];
+var VB = ['leggi', 'calcola', 'proponi', 'scrivi', 'cerca', 'rispondi', 'cita', 'chiedi', 'passa', 'usa', 'confronta', 'invia'];
+function tokenize(line) {
+  var out = [];
+  var re = /("[^"]*"?)|([A-Za-zÀ-ÿ_]+)|(\s+)|([{}:,<>])|([^\sA-Za-zÀ-ÿ_"{}:,<>]+)/g;
+  var m;
+  while ((m = re.exec(line))) {
+    var t = m[0], c = '#e9e6f5', w = '';
+    if (m[1]) c = '#f2c14e';
+    else if (m[2]) { if (KW.indexOf(t) >= 0) { c = '#c4b2ff'; w = '; font-weight: 700'; } else if (VB.indexOf(t) >= 0) c = '#8fe3ff'; }
+    else if (m[4]) c = '#9b95b8';
+    else if (m[5]) c = '#f6abcb';
+    out.push({ t: t, style: 'color: ' + c + w });
+  }
+  if (!out.length) out.push({ t: ' ', style: '' });
+  return out;
+}
+function pretty(x) { return x.replace(/_/g, ' ').trim(); }
+function block(lines, i) {
+  var res = [];
+  if (i < 0) return res;
+  for (var k = i + 1; k < lines.length; k++) {
+    var t = lines[k].trim();
+    if (t === '}') break;
+    if (t) res.push(pretty(t.replace(/"/g, '')));
+  }
+  return res;
+}
+function parse(src) {
+  var lines = src.split('\n');
+  var name = (src.match(/agente\s+"([^"]+)"/) || [])[1] || 'Nuovo agente';
+  var ruolo = (src.match(/ruolo:\s*"([^"]+)"/) || [])[1] || 'Aggiungi un ruolo con: ruolo: "..."';
+  var fonti = ((src.match(/fonti:\s*([^\n]+)/) || [])[1] || '').split(',').map(pretty).filter(Boolean);
+  var canali = ((src.match(/pubblica su:\s*([^\n]+)/) || [])[1] || '').split(',').map(pretty).filter(Boolean);
+  var ti = -1, ri = -1;
+  for (var i = 0; i < lines.length; i++) {
+    if (ti < 0 && /^\s*(quando|ogni)\b/.test(lines[i])) ti = i;
+    if (ri < 0 && /^\s*regole\b/.test(lines[i])) ri = i;
+  }
+  var trig = ti >= 0 ? pretty(lines[ti].replace('{', '')) : 'quando …';
+  return { name: name, ruolo: ruolo, fonti: fonti.length ? fonti : ['nessuna fonte'], canali: canali.length ? canali : ['—'], trigger: trig.toUpperCase(), steps: block(lines, ti), regole: block(lines, ri) };
+}
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { view: 'home', hovered: null, created: { data: [{ name: 'Data Agent – Vendite', channels: [] }, { name: 'Data Agent – Produzione', channels: [] }], document: [{ name: 'Document Agent', channels: [] }] }, draftChannels: { web: true }, pending: [{ id: 'writing', name: 'Writing Agent – Verbali HR', author: 'Giulia R. (HR)', sources: 'Regolamento interno, modelli verbali' }, { id: 'gpt', name: 'GPT Agent – Helpdesk IT', author: 'Marco T. (IT)', sources: 'Knowledge base IT, ticket storici' }], alertSet: { warn: true, cap: false, approve: true }, customs: [], modal: null, target: null, draftName: '', tpl: 'credit', script: TPLS.credit, run: 'idle', needs: {}, sent: false, dept: 'all', ideaText: '', consMsg: '', packs: 0, est: { plan: 'business', users: 50, packs: 0, credit: 1, pratiche: 0, human: 0, voice: 0 } };
+  }
+  go(v) {
+    this.setState({ view: v, modal: null, hovered: null });
+    try { window.scrollTo(0, 0); } catch (e) {}
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var base = [
+      { id: 'credit', name: 'Credit Agent', isNew: true, color: '#e0a526', tint: '#fbefcc', light: '#f2c14e', duration: '0:45', desc: 'Legge bilanci e Centrale Rischi e prepara il dossier di affidamento.', caption: 'Dalla pratica caricata al dossier con rating e proposta' },
+      { id: 'data', name: 'Data Agent', color: '#4f7fe0', tint: '#e2eafc', light: '#a9c3ff', duration: '0:42', desc: 'Fai domande ai tuoi dati e ottieni grafici e tabelle.', caption: 'Domanda: “Fatturato per regione nel Q3” → grafico pronto' },
+      { id: 'document', name: 'Document Agent', color: '#d9773a', tint: '#fbe7d9', light: '#f7bf96', duration: '0:38', desc: 'Legge contratti e PDF ed estrae le informazioni chiave.', caption: 'Estrazione delle clausole da un contratto PDF' },
+      { id: 'gpt', name: 'GPT Agent', color: '#7b5fd6', tint: '#ebe4fc', light: '#c9b8ff', duration: '0:35', desc: 'Un assistente in chat che conosce i documenti del tuo team.', caption: 'Chat con la knowledge base aziendale' },
+      { id: 'humanoid', name: 'Humanoid Agent', color: '#2a9d99', tint: '#d9f1f0', light: '#8fe0dc', duration: '0:50', desc: 'Un avatar con voce e volto per i tuoi utenti, su web, totem, telefono o WhatsApp.', caption: 'L’avatar risponde a voce a un cliente' },
+      { id: 'verifai', name: 'VerifAI Agent', color: '#3f9a5f', tint: '#dcf1e3', light: '#a6e5ba', duration: '0:40', desc: 'Controlla fatti e fonti prima che la risposta arrivi.', caption: 'Verifica delle fonti su una risposta generata' },
+      { id: 'writing', name: 'Writing Agent', color: '#cc4f86', tint: '#fae0ec', light: '#f6abcb', duration: '0:33', desc: 'Scrive report, email e testi nel tuo stile.', caption: 'Bozza di report mensile a partire da un brief' }
+    ];
+    var customs = s.customs.map(function (c, i) {
+      return { id: 'custom' + i, name: c.name, custom: true, color: '#7b5fd6', tint: '#ebe4fc', light: '#c9b8ff', duration: '0:30', desc: c.desc, caption: 'Il tuo agente creato con LIA in azione' };
+    });
+    var all = base.concat(customs);
+    var CH = { web: 'Web', totem: 'Totem', phone: 'Telefono', whatsapp: 'WhatsApp' };
+    var listOf = function (id) { return s.created[id] || []; };
+    var isOn = function (a) { return a.custom || listOf(a.id).length > 0; };
+    var instanceCount = base.reduce(function (t, a) { return t + listOf(a.id).length; }, 0) + customs.length;
+    var activeCount = all.filter(isOn).length;
+
+    var agents = all.map(function (a) {
+      var on = isOn(a);
+      var hov = s.hovered === a.id;
+      var nm = a.name; var cnt = a.custom ? 1 : listOf(a.id).length;
+      return {
+        name: nm, desc: a.desc, color: a.color, light: a.light, tint: a.tint,
+        inactive: !on, isCustom: !!a.custom, count: cnt, multi: cnt > 1,
+        showNew: !!a.isNew && !on, newLabel: 'NUOVO',
+        rot: hov ? 180 : 0,
+        frontFilter: on ? '' : 'filter: grayscale(1); opacity: 0.7;',
+        nameColor: on ? '#1f1838' : '#5d5873',
+        aria: nm + (on ? '' : ' (da creare)') + ': ' + a.desc + ' Apri la demo.',
+        isCredit: a.id === 'credit', isData: a.id === 'data', isDoc: a.id === 'document', isGpt: a.id === 'gpt' || !!a.custom, isHuman: a.id === 'humanoid', isVerif: a.id === 'verifai', isWrite: a.id === 'writing',
+        enter: function () { self.setState({ hovered: a.id }); },
+        leave: function () { if (self.state.hovered === a.id) self.setState({ hovered: null }); },
+        demo: function () { self.setState({ modal: 'demo', target: a.id, hovered: null }); }
+      };
+    });
+
+
+    var AG = { data: ['Data Agent', '#4f7fe0'], doc: ['Document Agent', '#d9773a'], gpt: ['GPT Agent', '#7b5fd6'], human: ['Humanoid Agent', '#2a9d99'], verif: ['VerifAI Agent', '#3f9a5f'], write: ['Writing Agent', '#cc4f86'], credit: ['Credit Agent', '#e0a526'], rag: ['Advanced RAG', '#5d5873'] };
+    var ag = function (ids) { return ids.map(function (k) { return { name: AG[k][0], color: AG[k][1] }; }); };
+    var DEPTS = { amm: ['Amministrazione', 'background: #fbefcc; color: #6b4e0a'], hr: ['HR', 'background: #fae0ec; color: #7a2450'], comm: ['Commerciale', 'background: #e2eafc; color: #2b3f7a'], ops: ['Operations', 'background: #d9f1f0; color: #145754'], legal: ['Legale & Compliance', 'background: #dcf1e3; color: #1e5a34'], pa: ['Pubblica Amministrazione', 'background: #ebe4fc; color: #3b2a78'] };
+    var ideaDefs = [
+      { dept: 'amm', title: 'Fatture passive in automatico', text: 'Legge le fatture in arrivo, le confronta con ordini e DDT e prepara la registrazione, segnalando le differenze.', agents: ['doc', 'verif'] },
+      { dept: 'amm', title: 'Solleciti di pagamento', text: 'Controlla le scadenze e scrive solleciti personalizzati per ogni cliente, con il tono giusto.', agents: ['data', 'write'] },
+      { dept: 'hr', title: 'Onboarding dei nuovi assunti', text: 'Risponde alle domande dei nuovi colleghi, prepara documenti e checklist del primo mese.', agents: ['gpt', 'write'] },
+      { dept: 'hr', title: 'Prima lettura dei CV', text: 'Confronta i curriculum con i requisiti della posizione e prepara una shortlist motivata.', agents: ['doc'] },
+      { dept: 'comm', title: 'Offerte commerciali dal CRM', text: 'Parte dai dati del cliente e dai listini e prepara la bozza dell’offerta da rivedere.', agents: ['data', 'write'] },
+      { dept: 'comm', title: 'Customer care su ogni canale', text: 'Risponde a clienti e cittadini su web, mail, WhatsApp, telefono e totem.', agents: ['human', 'gpt'] },
+      { dept: 'ops', title: 'Report di produzione ogni mattina', text: 'Incrocia ERP, Excel e sensori e ti segnala anomalie, scarti e ritardi prima della riunione.', agents: ['data'] },
+      { dept: 'legal', title: 'Analisi dei contratti', text: 'Estrae clausole, scadenze e rinnovi e mette in evidenza i punti a rischio.', agents: ['doc', 'verif'] },
+      { dept: 'legal', title: 'Audit su checklist', text: 'Verifica la conformità di procedure e documenti rispetto a checklist operative e normative.', agents: ['verif'] },
+      { dept: 'pa', title: 'Gare d’appalto', text: 'Legge il bando, verifica i requisiti e prepara la documentazione da presentare.', agents: ['doc', 'write', 'verif'] },
+      { dept: 'pa', title: 'Atti e verbali a norma', text: 'Redige atti, determine e verbali partendo da appunti e modelli dell’ente.', agents: ['write'] },
+      { dept: 'amm', title: 'Pratiche di credito', text: 'Dalla documentazione del cliente al dossier con rating e proposta di affidamento.', agents: ['credit'] }
+    ];
+    var toCons = function (msg) {
+      var nd = Object.assign({}, self.state.needs); nd.custom = true;
+      self.setState({ view: 'cons', consMsg: msg, needs: nd, sent: false, modal: null });
+      setTimeout(function () { var el = document.getElementById('contatto'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 60);
+    };
+
+    var grp = function (n) { return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); };
+    var eur = function (n) { return '€ ' + grp(n); };
+    var PL = { starter: { price: 490, users: 10, extra: 25, credits: 20000 }, business: { price: 1490, users: 50, extra: 20, credits: 100000 } };
+    var e = s.est;
+    var ep = PL[e.plan];
+    var extraUsers = Math.max(0, e.users - ep.users);
+    var estItems = [
+      { label: 'Piano ' + (e.plan === 'starter' ? 'Starter' : 'Business'), v: ep.price },
+      { label: extraUsers + ' utenti extra', v: extraUsers * ep.extra },
+      { label: e.packs + ' pacchetti crediti', v: e.packs * 200 },
+      { label: 'Credit Agent', v: e.credit ? 990 : 0 },
+      { label: e.pratiche + ' pratiche extra', v: e.pratiche * 8 },
+      { label: e.human + ' Humanoid Agent', v: e.human * 590 },
+      { label: e.voice + ' minuti di voce', v: Math.round(e.voice * 0.12) }
+    ];
+    var estTotal = estItems.reduce(function (t, i) { return t + i.v; }, 0);
+    var setEst = function (k, d, min, max) { return function () { var n = Object.assign({}, self.state.est); n[k] = Math.min(max, Math.max(min, n[k] + d)); self.setState({ est: n }); }; };
+    var used = 62400;
+    var cap = 100000 + s.packs * 25000;
+    var usageDefs = [['Data Agent', 24800, '#4f7fe0'], ['Document Agent', 18300, '#d9773a'], ['GPT Agent', 11200, '#7b5fd6'], ['Writing Agent', 8100, '#cc4f86']];
+    var planDefs = [
+      { id: 'starter', name: 'Starter', who: 'PMI e singoli reparti', price: '€ 490', unit: '/mese', features: ['10 utenti inclusi (€ 25 per extra)', '3 agenti a scelta', '20.000 crediti al mese', 'Connettori standard', 'Supporto via email'] },
+      { id: 'business', name: 'Business', who: 'Aziende medie', price: '€ 1.490', unit: '/mese', features: ['50 utenti inclusi (€ 20 per extra)', 'Agenti illimitati', '100.000 crediti al mese', 'Connettori certificati, SSO e ruoli', 'Supporto in orario d’ufficio'] },
+      { id: 'enterprise', name: 'Enterprise / PA', who: 'Grandi aziende, banche, PA', price: 'da € 4.000', unit: '/mese', features: ['Utenti e crediti su misura', 'Audit e tracciabilità AI Act', 'SaaS, on-premise o Pod', 'Versione a canone fisso per MePA', 'SLA 99,9% e referente dedicato'] }
+    ];
+    var target = all.filter(function (a) { return a.id === s.target; })[0];
+    var tOn = target ? isOn(target) : false;
+    var hasH = listOf('humanoid').length > 0; var hasC = listOf('credit').length > 0;
+    var hasWA = listOf('humanoid').some(function (x) { return (x.channels || []).indexOf('whatsapp') >= 0; });
+    var navStyle = function (v) { return s.view === v ? 'background: rgba(255,255,255,0.1); color: #ffffff' : 'background: transparent; color: #e9e6f5'; };
+    var cur = function (v) { return s.view === v ? 'page' : 'false'; };
+
+    // LIA
+    var lia = parse(s.script);
+    var tplDefs = [{ id: 'credit', label: 'Credit Agent' }, { id: 'hr', label: 'Assistente HR' }, { id: 'sales', label: 'Report vendite' }];
+    var runMap = { idle: ['Bozza', 'background: #f3f2f8; color: #4a4560'], running: ['Creazione in corso…', 'background: #fff4d6; color: #6b4e0a'], done: ['Pronto', 'background: #ddf3e5; color: #1f6b3e'] };
+
+    // Consulenza
+    var needDefs = [{ id: 'custom', label: 'Agente su misura' }, { id: 'integr', label: 'Integrazione con i miei sistemi' }, { id: 'training', label: 'Formazione su LIA' }, { id: 'credit', label: 'Credit Agent personalizzato' }];
+    var needChips = needDefs.map(function (n) {
+      var on = !!s.needs[n.id];
+      return { label: n.label, pressed: on ? 'true' : 'false', style: on ? 'border: 1.5px solid #3b2a78; background: #3b2a78; color: #ffffff' : 'border: 1.5px solid #dcd9e8; background: #ffffff; color: #1f1838',
+        toggle: function () { var nd = Object.assign({}, self.state.needs); nd[n.id] = !nd[n.id]; self.setState({ needs: nd }); } };
+    });
+    var pickNeed = function (id) {
+      var nd = Object.assign({}, self.state.needs); nd[id] = true;
+      self.setState({ needs: nd, sent: false });
+      setTimeout(function () { var el = document.getElementById('contatto'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 30);
+    };
+    var svcDefs = [
+      { need: 'custom', num: '01', bg: '#ebe4fc', fg: '#3b2a78', title: 'Agenti su misura', text: 'Progettiamo con te un agente per un processo specifico della tua azienda.' },
+      { need: 'integr', num: '02', bg: '#e2eafc', fg: '#2b3f7a', title: 'Integrazioni', text: 'Colleghiamo gli agenti a gestionali, CRM, archivi documentali e sistemi interni.' },
+      { need: 'training', num: '03', bg: '#dcf1e3', fg: '#1e5a34', title: 'Formazione su LIA', text: 'Insegniamo al tuo team a creare e mantenere gli agenti in autonomia.' },
+      { need: 'credit', num: '04', bg: '#fbefcc', fg: '#7a5410', title: 'Credit Agent su misura', text: 'Adattiamo il Credit Agent alle tue policy, ai tuoi modelli di rating e ai tuoi flussi.' }
+    ];
+
+    return {
+      consumables: [
+        { name: 'Crediti', agent: 'Data, Document, GPT, Writing, VerifAI', color: '#7b5fd6', on: true, used: 62400, inc: 100000 + s.packs * 25000, unit: '', price: '€ 200 ogni 25.000' },
+        { name: 'Pratiche di credito', agent: 'Credit Agent', color: '#e0a526', on: hasC, used: hasC ? 64 : 0, inc: 100, unit: '', price: '€ 8 a pratica', cta: 'Attiva Credit Agent', go: function () { self.setState({ modal: 'create', target: 'credit', draftName: 'Credit Agent' }); } },
+        { name: 'Minuti di voce', agent: 'Humanoid Agent', color: '#2a9d99', on: hasH, used: hasH ? 340 : 0, inc: 0, unit: ' min', price: '€ 0,12 al minuto', cta: 'Crea un Humanoid Agent', go: function () { self.setState({ modal: 'create', target: 'humanoid', draftName: 'Humanoid Agent', draftChannels: { web: true, whatsapp: true } }); } },
+        { name: 'Conversazioni WhatsApp', agent: 'Humanoid Agent su WhatsApp', color: '#25a366', on: hasWA, used: hasWA ? 128 : 0, inc: 0, unit: '', price: '[€ __] a conversazione', cta: 'Attiva WhatsApp', go: function () { self.setState({ modal: 'create', target: 'humanoid', draftName: 'Humanoid Agent' + (hasH ? ' ' + (listOf('humanoid').length + 1) : ''), draftChannels: { whatsapp: true } }); } }
+      ].map(function (c) {
+        return { name: c.name, agent: c.agent, color: c.color,
+          status: c.on ? 'ATTIVO' : 'NON ATTIVO', statusStyle: c.on ? 'background: #ddf3e5; color: #1f6b3e' : 'background: #f3f2f8; color: #4a4560',
+          usedLabel: grp(c.used) + c.unit, includedLabel: c.inc ? grp(c.inc) + ' inclusi' : 'solo a consumo',
+          pct: c.inc ? Math.min(100, c.used / c.inc * 100).toFixed(1) : (c.used ? 100 : 0), price: c.price,
+          canActivate: !c.on && !!c.go, cta: c.cta || '', activate: function () { if (c.go) c.go(); } };
+      }),
+      usage: usageDefs.map(function (u) { return { name: u[0], label: grp(u[1]), pct: (u[1] / cap * 100).toFixed(1), color: u[2] }; }),
+      usedLabel: grp(used), capLabel: grp(cap),
+      packLabel: s.packs ? 'Aggiunti ' + s.packs + ' pacchetti · aggiungine un altro' : 'Aggiungi pacchetto',
+      buyPack: function () { self.setState({ packs: self.state.packs + 1 }); },
+      plans: planDefs.map(function (p) {
+        var cur = p.id === 'business';
+        return { name: p.name, who: p.who, price: p.price, unit: p.unit, features: p.features, current: cur,
+          cardStyle: cur ? 'background: #1a1238; color: #ffffff; box-shadow: 0 18px 40px rgba(26,18,56,0.25)' : 'background: #ffffff; color: #1f1838; border: 1px solid #e4e2ee',
+          check: cur ? '#8fe3b0' : '#2e8b57',
+          btnStyle: cur ? 'border: 1px solid rgba(255,255,255,0.4); background: transparent; color: #ffffff' : 'border: 1.5px solid #3b2a78; background: #ffffff; color: #3b2a78',
+          cta: cur ? 'Gestisci il piano' : (p.id === 'enterprise' ? 'Parla con noi' : 'Passa a ' + p.name),
+          pick: function () { if (p.id === 'enterprise') self.go('cons'); } };
+      }),
+      addons: [
+        { tag: 'NUOVO', tagStyle: 'background: #f2c14e; color: #1a1238', name: 'Credit Agent', price: '€ 990', unit: '/mese', text: '100 pratiche incluse, poi € 8 a pratica. Adattamento alle tue policy da € 5.000.', cta: 'Scopri il Credit Agent', go: function () { self.go('credit'); } },
+        { tag: 'AGENTE PREMIUM', tagStyle: 'background: #d9f1f0; color: #145754', name: 'Humanoid Agent', price: '€ 590', unit: '/mese', text: 'Per avatar o canale. Voce € 0,12 al minuto, personalizzazione da € 3.000.', cta: 'Richiedi informazioni', go: function () { toCons('Vorremmo informazioni su Humanoid Agent.'); } },
+        { tag: 'LIA', tagStyle: 'background: #ebe4fc; color: #3b2a78', name: 'Formazione LIA', price: '€ 490', unit: 'a persona', text: 'Corso online LIA Developer. Esame di certificazione € 190, aula per team € 3.500 al giorno.', cta: 'Prova LIA gratis', go: function () { self.go('lia'); } },
+        { tag: 'SUPPORTO', tagStyle: 'background: #dcf1e3; color: #1e5a34', name: 'Supporto premium', price: '+15–20%', unit: 'del canone', text: 'SLA garantiti e tempi di risposta dedicati per gli agenti critici.', cta: 'Richiedi informazioni', go: function () { toCons('Vorremmo informazioni sul supporto premium con SLA.'); } }
+      ],
+      estPlans: [{ id: 'starter', label: 'Starter' }, { id: 'business', label: 'Business' }].map(function (x) {
+        var sel = e.plan === x.id;
+        return { label: x.label, pressed: sel ? 'true' : 'false', style: sel ? 'border: 1.5px solid #3b2a78; background: #3b2a78; color: #ffffff' : 'border: 1.5px solid #dcd9e8; background: #ffffff; color: #1f1838',
+          pick: function () { var n = Object.assign({}, self.state.est); n.plan = x.id; self.setState({ est: n }); } };
+      }),
+      steppers: [
+        { label: 'Utenti', hint: ep.users + ' inclusi nel piano', value: e.users, dec: setEst('users', -5, 1, 500), inc: setEst('users', 5, 1, 500), decLabel: 'Meno 5 utenti', incLabel: 'Più 5 utenti' },
+        { label: 'Pacchetti crediti extra al mese', hint: grp(ep.credits) + ' crediti già inclusi', value: e.packs, dec: setEst('packs', -1, 0, 50), inc: setEst('packs', 1, 0, 50), decLabel: 'Un pacchetto in meno', incLabel: 'Un pacchetto in più' },
+        { label: 'Credit Agent', hint: '0 = no, 1 = sì', value: e.credit, dec: setEst('credit', -1, 0, 1), inc: setEst('credit', 1, 0, 1), decLabel: 'Togli Credit Agent', incLabel: 'Aggiungi Credit Agent' },
+        { label: 'Pratiche di credito extra al mese', hint: 'oltre le 100 incluse', value: e.pratiche, dec: setEst('pratiche', -50, 0, 5000), inc: setEst('pratiche', 50, 0, 5000), decLabel: 'Meno 50 pratiche', incLabel: 'Più 50 pratiche' },
+        { label: 'Humanoid Agent', hint: 'avatar o canali', value: e.human, dec: setEst('human', -1, 0, 20), inc: setEst('human', 1, 0, 20), decLabel: 'Un avatar in meno', incLabel: 'Un avatar in più' },
+        { label: 'Minuti di voce al mese', hint: '€ 0,12 al minuto', value: e.voice, dec: setEst('voice', -500, 0, 100000), inc: setEst('voice', 500, 0, 100000), decLabel: 'Meno 500 minuti', incLabel: 'Più 500 minuti' }
+      ],
+      estLines: estItems.filter(function (i) { return i.v > 0; }).map(function (i) { return { label: i.label, value: eur(i.v) }; }),
+      estMonth: eur(estTotal), estYear: eur(estTotal * 12),
+      servicePrices: [
+        { name: 'Analisi del business (mezza giornata)', price: '€ 1.500' },
+        { name: 'Analisi processi + roadmap', price: '€ 6.000–12.000' },
+        { name: 'Agente su misura', price: '€ 8.000–40.000' },
+        { name: 'Connettore custom', price: '€ 5.000–15.000' },
+        { name: 'Giornata consulente', price: '€ 900–1.200' }
+      ],
+      ideaText: s.ideaText,
+      setIdeaText: function (e) { self.setState({ ideaText: e.target.value }); },
+      bookAnalysis: function () { toCons('Vorremmo un’analisi dei nostri processi per capire dove gli agenti possono portare valore.'); },
+      proposeIdea: function () { var t = (self.state.ideaText || '').trim(); toCons(t ? 'Vorremmo affidare a un agente questo processo: ' + t : ''); },
+      ideaSeeds: ['Analisi contratti', 'Gare d’appalto', 'Pratiche di credito', 'Customer care'].map(function (l) { return { label: l, pick: function () { self.setState({ ideaText: l }); } }; }),
+      deptChips: [{ id: 'all', label: 'Tutte' }].concat(Object.keys(DEPTS).map(function (k) { return { id: k, label: DEPTS[k][0] }; })).map(function (d) {
+        var sel = s.dept === d.id;
+        return { label: d.label, pressed: sel ? 'true' : 'false', style: sel ? 'border: 1.5px solid #3b2a78; background: #3b2a78; color: #ffffff' : 'border: 1.5px solid #dcd9e8; background: #ffffff; color: #1f1838', pick: function () { self.setState({ dept: d.id }); } };
+      }),
+      ideas: ideaDefs.map(function (i) {
+        return { title: i.title, text: i.text, deptLabel: DEPTS[i.dept][0].toUpperCase(), deptStyle: DEPTS[i.dept][1], agents: ag(i.agents), pick: function () { toCons('Vorremmo realizzare l’idea “' + i.title + '”: ' + i.text); } };
+      }),
+      consMsg: s.consMsg,
+      setConsMsg: function (e) { self.setState({ consMsg: e.target.value }); },
+      podInfo: function () { toCons('Vorremmo maggiori informazioni su Luxia Pod.'); },
+      news: [
+        { tag: 'PARTNERSHIP', date: '08 set 2026', title: 'ANFoV dà il benvenuto a Luxia: l’AI italiana a supporto di PA e Comuni', href: 'https://www.hiluxia.com/blog/ANFoV-Luxia-per-la-pubblica-amministrazione' },
+        { tag: 'CASE STUDY', date: '26 gen 2026', title: 'L’AI nel Comune di Sezze', href: 'https://www.hiluxia.com/blog/case-study-l-ai-nel-comune-di-sezze' },
+        { tag: 'MONDO AI', date: '28 gen 2026', title: 'Writing Agent: scrittura automatizzata per imprese e PA', href: 'https://www.hiluxia.com/blog/writing-agent-scrittura-automatizzata-per-imprese-e-pubbliche-amministrazioni' }
+      ],
+      cases: [
+        { kind: 'factory', bg: '#e2eafc', sector: 'MANIFATTURA', name: 'Azienda manifatturiera', challenge: 'Dati di produzione sparsi tra ERP, fogli Excel e sensori IoT: analisi lente e anomalie scoperte in ritardo.', value: 'I responsabili chiedono in linguaggio naturale e ricevono grafici subito; report di qualità e manutenzione elaborati in automatico.', result: '−40% tempi di analisi', agents: ag(['data', 'doc']), href: 'https://www.hiluxia.com/case-study/azienda-manifatturiera' },
+        { kind: 'build', bg: '#fbe7d9', sector: 'COSTRUZIONI', name: 'Ferreri Costruzioni', challenge: 'Informazioni dell’impresa da consultare velocemente, senza passare ogni volta da report manuali.', value: 'Un Data Agent su misura che risponde alle domande sui dati aziendali in linguaggio naturale.', agents: ag(['data']), href: 'https://www.hiluxia.com/case-study/ferreri-costruzioni' },
+        { kind: 'bank', bg: '#dcf1e3', sector: 'BANCA', name: 'Vivibanca', challenge: 'Grandi volumi di documenti e procedure da consultare e da verificare rispetto alle regole interne.', value: 'Ricerca avanzata su documenti, mail e archivi, con audit automatici di conformità sulle checklist operative.', agents: ag(['rag', 'verif']), href: '' },
+        { kind: 'pa', bg: '#ebe4fc', sector: 'PUBBLICA AMMINISTRAZIONE', name: 'Comune di Sezze', challenge: 'Uffici con poche risorse e tante richieste da cittadini e procedure da gestire.', value: 'L’AI entra negli uffici comunali per supportare il lavoro quotidiano e il servizio ai cittadini.', agents: [], href: 'https://www.hiluxia.com/case-study/comune-di-sezze' },
+        { kind: 'mkt', bg: '#fae0ec', sector: 'MARKETING', name: 'Agenzia di marketing', challenge: 'Molti clienti, molti contenuti e analisi da preparare in tempi stretti.', value: 'Gli agenti Luxia entrano nel lavoro di tutti i giorni dell’agenzia.', agents: [], href: 'https://www.hiluxia.com/case-study/agenzia-di-marketing' }
+      ].map(function (c) {
+        return { bg: c.bg, sector: c.sector, name: c.name, challenge: c.challenge, value: c.value, agents: c.agents, result: c.result || '', hasResult: !!c.result, href: c.href, hasLink: !!c.href, noLink: !c.href,
+          isFactory: c.kind === 'factory', isBuild: c.kind === 'build', isBank: c.kind === 'bank', isPa: c.kind === 'pa', isMkt: c.kind === 'mkt',
+          ask: function () { toCons('Vorremmo sapere di più sul progetto ' + c.name + '.'); } };
+      }),
+      ideasPrev: function () { var el = document.getElementById('ideas-row'); if (el) el.scrollBy({ left: -580, behavior: 'smooth' }); },
+      ideasNext: function () { var el = document.getElementById('ideas-row'); if (el) el.scrollBy({ left: 580, behavior: 'smooth' }); },
+      casesPrev: function () { var el = document.getElementById('cases-row'); if (el) el.scrollBy({ left: -720, behavior: 'smooth' }); },
+      casesNext: function () { var el = document.getElementById('cases-row'); if (el) el.scrollBy({ left: 720, behavior: 'smooth' }); },
+      isHome: s.view === 'home', isPlans: s.view === 'plans', navPlans: navStyle('plans'), curPlans: cur('plans'), goPlans: function () { self.go('plans'); }, isCredit: s.view === 'credit', isLia: s.view === 'lia', isCons: s.view === 'cons',
+      navHome: navStyle('home'), navLia: navStyle('lia'), navCons: navStyle('cons'), navCredit: navStyle('credit'),
+      curHome: cur('home'), curLia: cur('lia'), curCons: cur('cons'), curCredit: cur('credit'),
+      goHome: function () { self.go('home'); }, goLia: function () { self.go('lia'); }, goCons: function () { self.go('cons'); }, goCredit: function () { self.go('credit'); },
+      goPartner: function () { self.go('cons'); setTimeout(function () { var el = document.getElementById('partner'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 60); },
+
+      agents: agents, activeCount: activeCount,
+      progressPct: Math.round(activeCount / base.length * 100), totalCount: base.length, instanceCount: instanceCount,
+      projects: [
+        { name: 'Demo', stats: '20 Constellations · 16 Sources · 7 members', updated: 'Updated 48d ago' },
+        { name: 'TENANTS CONTROL ROOM', stats: '31 Constellations · 31 Sources · 18 members', updated: 'Updated 376d ago' },
+        { name: 'Test', stats: '52 Constellations · 25 Sources · 21 members', updated: 'Updated 404d ago' },
+        { name: 'POCs', stats: '102 Constellations · 70 Sources · 32 members', updated: 'Updated 488d ago' }
+      ],
+
+      creditTodo: !listOf('credit').length, creditDone: !!listOf('credit').length,
+      creditCta: listOf('credit').length ? 'Apri il tuo Credit Agent' : 'Crea il tuo Credit Agent',
+      createCredit: function () { if (!(self.state.created.credit || []).length) self.setState({ modal: 'create', target: 'credit', draftName: 'Credit Agent' }); },
+      demoCredit: function () { self.setState({ modal: 'demo', target: 'credit' }); },
+      dossierItems: ['Sintesi del cliente', 'Analisi di bilancio', 'Andamento Centrale Rischi', 'Indicatori chiave', 'Punti di attenzione', 'Bozza di proposta di affidamento'],
+      creditFor: ['Banche', 'Confidi', 'Leasing e factoring', 'Uffici crediti aziendali'],
+
+      liaScript: s.script, liaFile: pretty(lia.name).toLowerCase().replace(/\s+/g, '_') + '.lia',
+      liaLines: s.script.split('\n').map(function (l) { return { toks: tokenize(l) }; }),
+      lia: lia,
+      tplChips: tplDefs.map(function (t) {
+        var sel = s.tpl === t.id;
+        return { label: t.label, pressed: sel ? 'true' : 'false', style: sel ? 'border: 1.5px solid #3b2a78; background: #3b2a78; color: #ffffff' : 'border: 1.5px solid #dcd9e8; background: #ffffff; color: #1f1838',
+          pick: function () { self.setState({ tpl: t.id, script: TPLS[t.id], run: 'idle' }); } };
+      }),
+      setScript: function (e) { self.setState({ script: e.target.value, run: 'idle', tpl: null }); },
+      runLia: function () { self.setState({ run: 'running' }); setTimeout(function () { self.setState({ run: 'done' }); }, 1400); },
+      runLabel: s.run === 'running' ? 'Creazione…' : (s.run === 'done' ? 'Ricrea' : 'Crea agente'),
+      runBadge: runMap[s.run][0], runBadgeStyle: runMap[s.run][1], runDone: s.run === 'done',
+      addLiaAgent: function () {
+        var p = parse(self.state.script);
+        self.setState({ customs: self.state.customs.concat([{ name: p.name, desc: p.ruolo.charAt(0).toUpperCase() + p.ruolo.slice(1) + '.' }]), run: 'idle' });
+        self.go('home');
+      },
+      liaConcepts: [
+        { kw: 'agente', title: 'Chi è', text: 'Dai un nome e un ruolo: cosa fa e per chi lavora.' },
+        { kw: 'fonti', title: 'Cosa sa', text: 'Collega documenti, database e sistemi del progetto.' },
+        { kw: 'quando', title: 'Quando agisce', text: 'A una richiesta, a un evento o a orari fissi con “ogni”.' },
+        { kw: 'regole', title: 'Come si comporta', text: 'Limiti, controlli e momenti in cui chiede conferma a una persona.' }
+      ],
+
+      services: svcDefs.map(function (d) { return { num: d.num, bg: d.bg, fg: d.fg, title: d.title, text: d.text, pick: function () { pickNeed(d.need); } }; }),
+      processSteps: [
+        { n: '01', title: 'Call conoscitiva', text: 'Capiamo il tuo processo, i dati e l’obiettivo.' },
+        { n: '02', title: 'Workshop', text: 'Disegniamo insieme l’agente e le regole che deve seguire.' },
+        { n: '03', title: 'Prototipo', text: 'Lo costruiamo sui tuoi dati e lo provate sul campo.' },
+        { n: '04', title: 'Produzione', text: 'Lo rilasciamo, formiamo il team e restiamo al tuo fianco.' }
+      ],
+      needChips: needChips, formOpen: !s.sent, formSent: s.sent,
+      sendForm: function () { self.setState({ sent: true }); },
+      resetForm: function () { self.setState({ sent: false, needs: {}, consMsg: '' }); },
+      applyPartner: function () { pickNeed('partner'); },
+      partnerPerks: [
+        { title: 'Formazione', text: 'Percorso di certificazione su piattaforma e LIA.' },
+        { title: 'Accesso anticipato', text: 'Provi i nuovi agenti prima del rilascio.' },
+        { title: 'Supporto dedicato', text: 'Un referente tecnico per i tuoi progetti.' },
+        { title: 'Progetti insieme', text: 'Ti coinvolgiamo sui clienti della tua area.' }
+      ],
+
+      modalOpen: !!s.modal,
+      modalTitle: s.modal === 'approvals' ? 'Agenti da approvare' : s.modal === 'demo' ? 'Demo · ' + (target ? target.name : '') : (s.modal === 'create' ? 'Crea ' + (target ? target.name : 'agente') : ''),
+      modalWidth: s.modal === 'demo' ? '760px' : '520px',
+      isDemo: s.modal === 'demo', isCreate: s.modal === 'create',
+      demoColor: target ? target.color : '#7b5fd6', demoDuration: target ? target.duration : '', demoCaption: target ? target.caption : '', demoDesc: target ? target.desc : '',
+      demoBars: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0].map(function (d) { return { delay: d + 's' }; }),
+      demoActive: tOn, demoInactive: !tOn,
+      draftName: s.draftName,
+      setName: function (e) { self.setState({ draftName: e.target.value }); },
+      createFromDemo: function () { var n = target ? listOf(target.id).length : 0; self.setState({ modal: 'create', draftName: target ? (n ? target.name + ' ' + (n + 1) : target.name) : '', draftChannels: { web: true } }); },
+      waSelected: !!s.draftChannels.whatsapp,
+      pendingLabel: s.pending.length === 1 ? '1 agente in attesa' : (s.pending.length ? s.pending.length + ' agenti in attesa' : 'Nessun agente in attesa'),
+      hasPending: s.pending.length > 0, noPending: s.pending.length === 0,
+      openApprovals: function () { self.setState({ modal: 'approvals' }); },
+      isApprovals: s.modal === 'approvals',
+      pending: s.pending.map(function (pd) {
+        var rest = function () { return self.state.pending.filter(function (x) { return x.name !== pd.name; }); };
+        return { name: pd.name, author: pd.author, sources: pd.sources,
+          approve: function () { var c = Object.assign({}, self.state.created); c[pd.id] = (c[pd.id] || []).concat([{ name: pd.name, channels: [] }]); self.setState({ created: c, pending: rest() }); },
+          reject: function () { self.setState({ pending: rest() }); } };
+      }),
+      premiumLabel: (function () { var l = []; if (hasC) l.push('Credit Agent'); if (hasH) l.push('Humanoid'); return l.length ? l.join(', ') : 'nessuno'; })(),
+      askUpgrade: function () { toCons('Vorremmo modificare il nostro contratto (utenti, crediti o agenti premium).'); },
+      askPod: function () { toCons('Vorremmo valutare Luxia Pod o un’installazione on-premise.'); },
+      alerts: [
+        { k: 'warn', label: 'Avviso all’80% dei crediti', hint: 'Email agli amministratori' },
+        { k: 'cap', label: 'Blocca i consumi extra', hint: 'Oltre i crediti inclusi serve un’approvazione' }
+      ].map(function (a) {
+        var on = !!s.alertSet[a.k];
+        return { label: a.label, hint: a.hint, checked: on ? 'true' : 'false', trackStyle: on ? 'background: #3b2a78; justify-content: flex-end' : 'background: #cfcbdc; justify-content: flex-start',
+          toggle: function () { var n = Object.assign({}, self.state.alertSet); n[a.k] = !n[a.k]; self.setState({ alertSet: n }); } };
+      }),
+      isHumanDemo: s.modal === 'demo' && s.target === 'humanoid',
+      isHumanCreate: s.modal === 'create' && s.target === 'humanoid',
+      targetName: target ? target.name : '',
+      instancesLabel: target ? ('I TUOI ' + target.name.toUpperCase() + ' (' + (target.custom ? 1 : listOf(target.id).length) + ')') : '',
+      instances: target ? (target.custom ? [{ name: target.name, channels: [] }] : listOf(target.id)).map(function (x) {
+        return { name: x.name, channels: (x.channels || []).map(function (c) { return { label: CH[c], style: c === 'whatsapp' ? 'background: #c9f2dc; color: #0b3d2c' : 'background: #f3f2f8; color: #4a4560' }; }) };
+      }) : [],
+      channelChips: ['web', 'totem', 'phone', 'whatsapp'].map(function (c) {
+        var on = !!s.draftChannels[c];
+        return { label: CH[c], isNew: c === 'whatsapp', pressed: on ? 'true' : 'false', style: on ? 'border: 1.5px solid #145754; background: #145754; color: #ffffff' : 'border: 1.5px solid #dcd9e8; background: #ffffff; color: #1f1838',
+          toggle: function () { var d = Object.assign({}, self.state.draftChannels); d[c] = !d[c]; self.setState({ draftChannels: d }); } };
+      }),
+      confirmCreate: function () {
+        var c = Object.assign({}, self.state.created);
+        var t = base.filter(function (a) { return a.id === self.state.target; })[0];
+        var nm = (self.state.draftName || '').trim() || (t ? t.name : 'Agente');
+        var chans = self.state.target === 'humanoid' ? Object.keys(self.state.draftChannels).filter(function (k) { return self.state.draftChannels[k]; }) : [];
+        c[self.state.target] = (c[self.state.target] || []).concat([{ name: nm, channels: chans }]);
+        self.setState({ created: c, modal: 'demo' });
+      },
+      closeModal: function () { self.setState({ modal: null, target: null }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
